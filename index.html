@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Revit automation tool for tagging doors and rooms in corridor-based layouts. Perfect for architecture firms using Revit for apartments, hotels, and more.">
+  <meta name="keywords" content="Revit, pyRevit, BIM, room tagging, door tagging, architecture automation, apartment layout, corridor layout">
   <title>Revit Door & Room Tagger</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -12,7 +14,7 @@
     <div class="container">
       <h1>Revit Door & Room Tagger</h1>
       <p class="subheadline">Automate room and door tagging in Revit. Save hundreds of hours per year.</p>
-      <a href="#contact" class="cta-btn">Get Started</a>
+      <a href="mailto:josh.nielsen876@gmail.com" class="cta-btn">Get the Tool</a>
     </div>
   </header>
 
@@ -45,10 +47,59 @@
       </div>
     </div>
     <p class="demo-description">Go from blank tags to fully labeled rooms and doors in seconds.</p>
-    <div class="video-demo">
-      <h3>Watch a Full Demo</h3>
-      <div class="video-placeholder">Video Demo Coming Soon</div>
+    <div class="video-carousel">
+      <button class="carousel-arrow left" aria-label="Previous video">&#8592;</button>
+      <video id="demoVideo" class="carousel-video" width="480" controls>
+        <source src="L shape segment demo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <button class="carousel-arrow right" aria-label="Next video">&#8594;</button>
     </div>
+    <script>
+      const videoSources = [
+        'L shape segment demo.mp4',
+        'T shape selection demo.mp4'
+      ];
+      let currentVideo = 0;
+      const videoElement = document.getElementById('demoVideo');
+      const leftArrow = document.querySelector('.carousel-arrow.left');
+      const rightArrow = document.querySelector('.carousel-arrow.right');
+      leftArrow.addEventListener('click', () => {
+        currentVideo = (currentVideo - 1 + videoSources.length) % videoSources.length;
+        videoElement.src = videoSources[currentVideo];
+        videoElement.play();
+      });
+      rightArrow.addEventListener('click', () => {
+        currentVideo = (currentVideo + 1) % videoSources.length;
+        videoElement.src = videoSources[currentVideo];
+        videoElement.play();
+      });
+    </script>
+    <style>
+      .video-carousel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .carousel-arrow {
+        font-size: 2rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #333;
+        padding: 0 0.5rem;
+      }
+      .carousel-arrow:focus {
+        outline: 2px solid #0078d7;
+      }
+      .carousel-video {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+    </style>
   </section>
 
   <section class="who-for container">
@@ -84,7 +135,7 @@
 
   <section class="contact container" id="contact">
     <h2>Contact & Purchase</h2>
-    <form class="contact-form">
+    <form class="contact-form" id="contactForm">
       <label for="name">Name</label>
       <input type="text" id="name" name="name" required>
       <label for="email">Email</label>
@@ -102,5 +153,17 @@
   <footer class="footer container">
     <p>&copy; 2025 Nielsen Automation, LLC. All rights reserved.</p>
   </footer>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      const subject = encodeURIComponent('Revit Door & Room Tagger Inquiry');
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nMessage: ${message}`);
+      window.location.href = `mailto:josh.nielsen876@gmail.com?subject=${subject}&body=${body}`;
+    });
+  </script>
 </body>
 </html> 

@@ -318,4 +318,28 @@ body {
   .pricing-box {
     padding: 18px 8px;
   }
+}
+
+.video-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.carousel-arrow {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  padding: 0 0.5rem;
+}
+.carousel-arrow:focus {
+  outline: 2px solid #0078d7;
+}
+.carousel-video {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 } 
