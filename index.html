@@ -21,7 +21,7 @@
   <section class="features container">
     <h2>Features</h2>
     <ul>
-      <li>One-click tagging for apartment and hotel layouts</li>
+      <li>Few-click tagging for apartment and hotel layouts</li>
       <li>Seamless integration with pyRevit</li>
       <li>Handles hundreds of rooms and doors in seconds</li>
       <li>Handles cascading rooms and doors, plus stairwells and more</li>
@@ -30,49 +30,82 @@
     </ul>
   </section>
 
-  <section class="demo container">
-    <h2>See It in Action</h2>
-    <!-- <div class="demo-media before-after">
-      <div class="demo-image-block">
-        <div class="demo-caption">Before</div>
-        <a href="Before.png" target="_blank" rel="noopener">
-          <img src="Before.png" alt="Before using Revit Door & Room Tagger" class="demo-image" />
-        </a>
+  <section class="demo">
+    <div class="container">
+      <h2>See It in Action</h2>
+      <!-- <div class="demo-media before-after">
+        <div class="demo-image-block">
+          <div class="demo-caption">Before</div>
+          <a href="Before.png" target="_blank" rel="noopener">
+            <img src="Before.png" alt="Before using Revit Door & Room Tagger" class="demo-image" />
+          </a>
+        </div>
+        <div class="demo-image-block">
+          <div class="demo-caption">After</div>
+          <a href="After.png" target="_blank" rel="noopener">
+            <img src="After.png" alt="After using Revit Door & Room Tagger" class="demo-image" />
+          </a>
+        </div>
+      </div> -->
+      <p class="demo-description">Go from blank tags to fully labeled rooms and doors in seconds.</p>
+    </div>
+    <div class="video-section">
+      <div class="video-carousel">
+        <button class="carousel-arrow left" aria-label="Previous video">&#8592;</button>
+        <div class="video-container">
+          <video id="demoVideo1" class="carousel-video active" width="720" controls>
+            <source src="L shape segment demo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <video id="demoVideo2" class="carousel-video" width="720" controls>
+            <source src="T shape selection demo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <div id="videoCaption" class="video-caption">Automatically tag doors based on identified corridor segments</div>
+        </div>
+        <button class="carousel-arrow right" aria-label="Next video">&#8594;</button>
       </div>
-      <div class="demo-image-block">
-        <div class="demo-caption">After</div>
-        <a href="After.png" target="_blank" rel="noopener">
-          <img src="After.png" alt="After using Revit Door & Room Tagger" class="demo-image" />
-        </a>
-      </div>
-    </div> -->
-    <p class="demo-description">Go from blank tags to fully labeled rooms and doors in seconds.</p>
-    <div class="video-carousel">
-      <button class="carousel-arrow left" aria-label="Previous video">&#8592;</button>
-      <video id="demoVideo" class="carousel-video" width="720" controls>
-        <source src="L shape segment demo.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <button class="carousel-arrow right" aria-label="Next video">&#8594;</button>
     </div>
     <script>
-      const videoSources = [
-        'L shape segment demo.mp4',
-        'T shape selection demo.mp4'
+      const videoCaptions = [
+        'Automatically tag doors based on identified corridor segments',
+        'Automatically tag doors based on user-defined sequence'
       ];
       let currentVideo = 0;
-      const videoElement = document.getElementById('demoVideo');
+      const videoElements = [
+        document.getElementById('demoVideo1'),
+        document.getElementById('demoVideo2')
+      ];
+      const captionElement = document.getElementById('videoCaption');
       const leftArrow = document.querySelector('.carousel-arrow.left');
       const rightArrow = document.querySelector('.carousel-arrow.right');
+      
+      function updateVideo() {
+        // Hide all videos
+        videoElements.forEach(video => {
+          video.classList.remove('active');
+          video.pause();
+        });
+        
+        // Show current video
+        videoElements[currentVideo].classList.add('active');
+        videoElements[currentVideo].play();
+        
+        // Update caption
+        captionElement.style.opacity = '0';
+        setTimeout(() => {
+          captionElement.textContent = videoCaptions[currentVideo];
+          captionElement.style.opacity = '1';
+        }, 150);
+      }
+      
       leftArrow.addEventListener('click', () => {
-        currentVideo = (currentVideo - 1 + videoSources.length) % videoSources.length;
-        videoElement.src = videoSources[currentVideo];
-        videoElement.play();
+        currentVideo = (currentVideo - 1 + videoElements.length) % videoElements.length;
+        updateVideo();
       });
       rightArrow.addEventListener('click', () => {
-        currentVideo = (currentVideo + 1) % videoSources.length;
-        videoElement.src = videoSources[currentVideo];
-        videoElement.play();
+        currentVideo = (currentVideo + 1) % videoElements.length;
+        updateVideo();
       });
     </script>
     <style>
@@ -151,7 +184,10 @@
   </section>
 
   <footer class="footer container">
-    <p>&copy; 2025 Nielsen Automation, LLC. All rights reserved.</p>
+    <div class="footer-content">
+      <img src="Phlox logo only.png" alt="Phlox Engineering" class="footer-logo">
+      <p>&copy; 2025 Phlox Engineering. All rights reserved.</p>
+    </div>
   </footer>
 
   <script>
