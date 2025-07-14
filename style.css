@@ -408,3 +408,46 @@ body {
   display: block;
   position: relative;
 } 
+
+/* Creator profile styles */
+.creator-profile {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.creator-photo {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.creator-info {
+  flex: 1;
+}
+.linkedin-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #0077b5;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.linkedin-link:hover {
+  color: #005983;
+  text-decoration: underline;
+}
+@media (max-width: 600px) {
+  .creator-profile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .creator-photo {
+    width: 90px;
+    height: 90px;
+  }
+} 
