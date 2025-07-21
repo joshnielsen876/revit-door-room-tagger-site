@@ -237,6 +237,10 @@
         </div>
       </div>
     </div>
+    <div style="text-align:center; margin-top: 24px;">
+      <button id="submitCalculatorData" class="cta-btn" type="button">Submit Calculator Data</button>
+      <div id="calculatorSubmitMsg" style="margin-top:12px;font-size:1rem;"></div>
+    </div>
   </section>
 
   <section class="what-you-get container">
@@ -402,6 +406,52 @@
     // Initialize calculator on page load
     document.addEventListener('DOMContentLoaded', function() {
       updateCalculator();
+    });
+  </script>
+  <script>
+    // Session ID logic
+    function getSessionId() {
+      let sessionId = localStorage.getItem('calculatorSessionId');
+      if (!sessionId) {
+        sessionId = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+        localStorage.setItem('calculatorSessionId', sessionId);
+      }
+      return sessionId;
+    }
+
+    document.getElementById('submitCalculatorData').addEventListener('click', async function() {
+      // Gather calculator data
+      const data = {
+        rooms: parseFloat(document.getElementById('numRooms').value) || 0,
+        tagsPerRoom: parseFloat(document.getElementById('avgTagsPerRoom').value) || 0,
+        taggingRate: parseFloat(document.getElementById('taggingRate').value) || 0,
+        revisionHours: parseFloat(document.getElementById('revisionHours').value) || 0,
+        revisionCount: parseFloat(document.getElementById('numRevisions').value) || 0,
+        hourlyRate: parseFloat(document.getElementById('hourlyRate').value) || 0,
+        sessionId: getSessionId()
+      };
+      const msgDiv = document.getElementById('calculatorSubmitMsg');
+      msgDiv.textContent = 'Submitting...';
+      try {
+        const response = await fetch('/.netlify/functions/log-calculator-function', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        if (response.ok && result.success) {
+          msgDiv.textContent = 'Calculator data submitted!';
+          msgDiv.style.color = '#28a745';
+        } else {
+          msgDiv.textContent = 'Error: ' + (result.error || 'Could not submit data.');
+          msgDiv.style.color = '#d32f2f';
+        }
+      } catch (err) {
+        msgDiv.textContent = 'Network error: Could not submit data.';
+        msgDiv.style.color = '#d32f2f';
+      }
     });
   </script>
 </body>

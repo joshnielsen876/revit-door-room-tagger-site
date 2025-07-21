@@ -1,0 +1,23 @@
+{
+  "name": "revit-door-room-tagger-site",
+  "version": "1.0.0",
+  "description": "This is a single-page marketing website for the Revit Door & Room Tagger, a pyRevit-based automation tool for architecture firms.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshnielsen876/revit-door-room-tagger-site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joshnielsen876/revit-door-room-tagger-site/issues"
+  },
+  "homepage": "https://github.com/joshnielsen876/revit-door-room-tagger-site#readme",
+  "dependencies": {
+    "pg": "^8.16.3"
+  }
+}
