@@ -41,6 +41,8 @@
     </ul>
   </section>
 
+
+
   <section class="demo">
     <div class="container">
       <h2>See It in Action</h2>
@@ -146,6 +148,97 @@
     </style>
   </section>
 
+  <section class="calculator container">
+    <h2>Calculate Your Current Costs</h2>
+    <p class="calculator-intro">See how much time and money you're spending on manual door and room tagging. Adjust the values below to match your typical multi-unit project.</p>
+    
+    <div class="calculator-grid">
+      <div class="calculator-form">
+        <div class="input-group">
+          <label for="numRooms">Number of rooms</label>
+          <input type="number" id="numRooms" value="120" min="1" max="1000">
+        </div>
+        <div class="input-group">
+          <label for="avgTagsPerRoom">Average tags per room 
+            <span class="tooltip" title="Includes closets, bathrooms, mechanical rooms, as well as building-wide tags like stairwells.">ⓘ</span>
+          </label>
+          <input type="number" id="avgTagsPerRoom" value="8" min="1" max="10" step="0.5">
+        </div>
+        <div class="input-group">
+          <label for="taggingRate">Average tagging rate (tags/hour)
+            <span class="tooltip" title="Realistic production tagging rate after accounting for plan reading, coordination checks, and inevitable interruptions.">ⓘ</span>
+          </label>
+          <input type="number" id="taggingRate" value="40" min="1" max="100">
+        </div>
+        <div class="input-group">
+          <label for="revisionHours">Hours spent each time renumbering after client changes</label>
+          <input type="number" id="revisionHours" value="4" min="0" step="0.5">
+        </div>
+        <div class="input-group">
+          <label for="numRevisions">Number of times you had to make those changes</label>
+          <input type="number" id="numRevisions" value="6" min="0">
+        </div>
+        <div class="input-group">
+          <label for="hourlyRate">Average hourly rate from all parties (drafters, architects, etc.)($)</label>
+          <input type="number" id="hourlyRate" value="65" min="10" max="200">
+        </div>
+      </div>
+      
+      <div class="calculator-results">
+        <div class="results-card">
+          <h3>Your Current Costs</h3>
+          <div class="cost-breakdown">
+            <div class="cost-item">
+              <span class="cost-label">Initial tagging (<span id="initialHoursResult">0</span> hours):</span>
+              <span class="cost-value" id="initialCost">$360</span>
+            </div>
+            <div class="cost-item">
+              <span class="cost-label">Revision work (<span id="revisionHoursResult">0</span> hours):</span>
+              <span class="cost-value" id="revisionCost">$540</span>
+            </div>
+            <div class="cost-item total">
+              <span class="cost-label">Total cost:</span>
+              <span class="cost-value" id="totalCost">$1,125</span>
+            </div>
+          </div>
+          
+          <div class="time-breakdown">
+            <h4>Time Breakdown</h4>
+            <div class="time-item">
+              <span class="time-label">Total hours:</span>
+              <span class="time-value" id="totalHours">25 hours</span>
+            </div>
+            <div class="time-item">
+              <span class="time-label">With automation:</span>
+              <span class="time-value automation" id="automationHours">~2 hours</span>
+            </div>
+            <div class="time-item">
+              <span class="time-label">Time saved:</span>
+              <span class="time-value savings" id="timeSaved">23 hours</span>
+            </div>
+          </div>
+          
+          <div class="savings-highlight">
+            <div class="savings-amount">Potential savings: <span id="potentialSavings">$1,035</span></div>
+            <div class="savings-percentage">That's <span id="savingsPercentage">92%</span> less time and cost!</div>
+          </div>
+          
+          <div class="error-cost-scenario">
+            <details>
+              <summary>What if one tag is wrong?</summary>
+              <div class="error-content">
+                <p>A single mislabeled door—especially one tied to fire ratings, access control, or unit layout—can easily cost $1,000–$5,000 in rework and schedule delays. On a <span id="errorRooms">120</span>-unit building with <span id="errorTags">960</span>+ tags, even a 1% error rate can mean tens of thousands in unexpected costs.</p>
+                <div class="error-calculation">
+                  <strong>Even a 1% error rate on <span id="errorTags2">960</span> tags = <span id="errorCount">10</span> mistakes × $2,000 avg correction = <span id="errorCost">$20,000</span>+ at risk</strong>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="what-you-get container">
     <h2>What You Get</h2>
     <ul>
@@ -219,6 +312,96 @@
       const subject = encodeURIComponent('Revit Door & Room Tagger Inquiry');
       const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nMessage: ${message}`);
       window.location.href = `mailto:info@phloxengineering.com?subject=${subject}&body=${body}`;
+    });
+  </script>
+
+  <script>
+    // Cost Calculator Functionality
+    function updateCalculator() {
+      // Get input values
+      const numRooms = parseFloat(document.getElementById('numRooms').value) || 0;
+      const avgTagsPerRoom = parseFloat(document.getElementById('avgTagsPerRoom').value) || 0;
+      const taggingRate = parseFloat(document.getElementById('taggingRate').value) || 1;
+      const revisionHours = parseFloat(document.getElementById('revisionHours').value) || 0;
+      const numRevisions = parseFloat(document.getElementById('numRevisions').value) || 0;
+      const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+
+      // Calculate total tags
+      const totalTags = numRooms * avgTagsPerRoom;
+      // Calculate initial hours as totalTags / taggingRate
+      const initialHours = totalTags / taggingRate;
+
+      // Calculate costs
+      const initialCost = initialHours * hourlyRate;
+      const revisionCost = revisionHours * numRevisions * hourlyRate;
+      const totalCost = initialCost + revisionCost;
+
+      // Calculate time
+      const totalHours = initialHours + (revisionHours * numRevisions);
+      const automationHours = Math.max(0.5, (totalTags / taggingRate) * 0.1); // Assume 90% time reduction
+      const timeSaved = totalHours - automationHours;
+      const automationCost = automationHours * hourlyRate;
+      const potentialSavings = totalCost - automationCost;
+      const savingsPercentage = totalCost > 0 ? Math.round((potentialSavings / totalCost) * 100) : 0;
+
+      // Calculate error cost scenario
+      const errorCount = Math.ceil(totalTags * 0.01); // 1% error rate
+      const errorCost = errorCount * 2000; // $2,000 average correction cost
+
+      // Update display
+      document.getElementById('initialCost').textContent = formatCurrency(initialCost);
+      document.getElementById('revisionCost').textContent = formatCurrency(revisionCost);
+      document.getElementById('totalCost').textContent = formatCurrency(totalCost);
+      document.getElementById('initialHoursResult').textContent = initialHours.toFixed(1);
+      document.getElementById('revisionHoursResult').textContent = (revisionHours * numRevisions).toFixed(1);
+      
+      document.getElementById('totalHours').textContent = `${totalHours.toFixed(1)} hours`;
+      document.getElementById('automationHours').textContent = `~${automationHours.toFixed(1)} hours`;
+      document.getElementById('timeSaved').textContent = `${timeSaved.toFixed(1)} hours`;
+      document.getElementById('potentialSavings').textContent = formatCurrency(potentialSavings);
+      document.getElementById('savingsPercentage').textContent = `${savingsPercentage}%`;
+
+      // Update error cost scenario
+      document.getElementById('errorRooms').textContent = numRooms;
+      document.getElementById('errorTags').textContent = totalTags;
+      document.getElementById('errorTags2').textContent = totalTags;
+      document.getElementById('errorCount').textContent = errorCount;
+      document.getElementById('errorCost').textContent = formatCurrency(errorCost);
+
+      // Add animation to savings highlight
+      const savingsHighlight = document.querySelector('.savings-highlight');
+      savingsHighlight.style.transform = 'scale(1.02)';
+      setTimeout(() => {
+        savingsHighlight.style.transform = 'scale(1)';
+      }, 200);
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(amount);
+    }
+
+    // Add event listeners to all calculator inputs
+    const calculatorInputs = [
+      'numRooms', 'avgTagsPerRoom', 'taggingRate', 'revisionHours', 'numRevisions', 
+      'hourlyRate'
+    ];
+
+    calculatorInputs.forEach(inputId => {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.addEventListener('input', updateCalculator);
+        input.addEventListener('change', updateCalculator);
+      }
+    });
+
+    // Initialize calculator on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCalculator();
     });
   </script>
 </body>

@@ -59,6 +59,246 @@ body {
   font-size: 1.08rem;
 }
 
+/* Calculator Styles */
+.calculator {
+  background: #f0f3f7;
+  border-radius: 12px;
+  margin: 32px auto;
+  padding: 40px 32px;
+}
+
+.calculator h2 {
+  text-align: center;
+  margin-bottom: 8px;
+  color: #1a2330;
+}
+
+.calculator-intro {
+  text-align: center;
+  color: #4a5a6a;
+  margin-bottom: 32px;
+  font-size: 1.1rem;
+}
+
+.calculator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.calculator-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: #2d3a4a;
+  font-size: 0.95rem;
+}
+
+.input-group input {
+  padding: 12px 16px;
+  border: 2px solid #e3e8ee;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #3a5a8c;
+  box-shadow: 0 0 0 3px rgba(58, 90, 140, 0.1);
+}
+
+.calculator-results {
+  position: sticky;
+  top: 20px;
+}
+
+.results-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 4px 16px rgba(34, 44, 54, 0.08);
+  border: 1px solid #e3e8ee;
+}
+
+.results-card h3 {
+  margin: 0 0 20px 0;
+  color: #1a2330;
+  font-size: 1.3rem;
+}
+
+.cost-breakdown {
+  margin-bottom: 24px;
+}
+
+.cost-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f3f7;
+}
+
+.cost-item.total {
+  border-bottom: 2px solid #3a5a8c;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 8px;
+  padding-top: 12px;
+}
+
+.cost-label {
+  color: #4a5a6a;
+}
+
+.cost-value {
+  font-weight: 600;
+  color: #1a2330;
+}
+
+.cost-item.total .cost-value {
+  color: #3a5a8c;
+  font-size: 1.2rem;
+}
+
+.time-breakdown {
+  margin-bottom: 24px;
+}
+
+.time-breakdown h4 {
+  margin: 0 0 12px 0;
+  color: #2d3a4a;
+  font-size: 1.1rem;
+}
+
+.time-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.time-label {
+  color: #4a5a6a;
+}
+
+.time-value {
+  font-weight: 600;
+  color: #1a2330;
+}
+
+.time-value.automation {
+  color: #28a745;
+}
+
+.time-value.savings {
+  color: #dc3545;
+}
+
+.savings-highlight {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.savings-amount {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.savings-percentage {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Tooltip styles */
+.tooltip {
+  color: #666;
+  cursor: help;
+  font-size: 0.9rem;
+  margin-left: 4px;
+}
+
+/* Error cost scenario styles */
+.error-cost-scenario {
+  margin-top: 24px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 20px;
+}
+
+.error-cost-scenario details {
+  cursor: pointer;
+}
+
+.error-cost-scenario summary {
+  font-weight: 600;
+  color: #d32f2f;
+  font-size: 1.1rem;
+  padding: 8px 0;
+  transition: color 0.2s;
+}
+
+.error-cost-scenario summary:hover {
+  color: #b71c1c;
+}
+
+.error-content {
+  margin-top: 12px;
+  padding: 16px;
+  background: #fff3e0;
+  border-radius: 8px;
+  border-left: 4px solid #ff9800;
+}
+
+.error-content p {
+  margin: 0 0 12px 0;
+  color: #5d4037;
+  line-height: 1.5;
+}
+
+.error-calculation {
+  background: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ffcc80;
+  color: #d84315;
+}
+
+/* Responsive design for calculator */
+@media (max-width: 768px) {
+  .calculator-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .calculator {
+    padding: 24px 20px;
+  }
+  
+  .results-card {
+    padding: 20px;
+  }
+  
+  .savings-amount {
+    font-size: 1.2rem;
+  }
+}
+
 .demo-media {
   display: flex;
   justify-content: center;
