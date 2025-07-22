@@ -238,7 +238,7 @@
       </div>
     </div>
     <div style="text-align:center; margin-top: 24px;">
-      <button id="submitCalculatorData" class="cta-btn" type="button">Submit Calculator Data</button>
+      <button id="submitCalculatorData" class="cta-btn" type="button">Calculate</button>
       <div id="calculatorSubmitMsg" style="margin-top:12px;font-size:1rem;"></div>
     </div>
   </section>
@@ -389,22 +389,9 @@
       }).format(amount);
     }
 
-    // Add event listeners to all calculator inputs
-    const calculatorInputs = [
-      'numRooms', 'avgTagsPerRoom', 'taggingRate', 'revisionHours', 'numRevisions', 
-      'hourlyRate'
-    ];
-
-    calculatorInputs.forEach(inputId => {
-      const input = document.getElementById(inputId);
-      if (input) {
-        input.addEventListener('input', updateCalculator);
-        input.addEventListener('change', updateCalculator);
-      }
-    });
-
-    // Initialize calculator on page load
+    // Only update results and log data when the button is pressed
     document.addEventListener('DOMContentLoaded', function() {
+      // Show default calculated values on page load
       updateCalculator();
     });
   </script>
@@ -432,25 +419,36 @@
         hourlyRate: parseFloat(document.getElementById('hourlyRate').value) || 0,
         sessionId: getSessionId()
       };
-      const msgDiv = document.getElementById('calculatorSubmitMsg');
-      msgDiv.textContent = 'Submitting...';
+      // Update the calculator results
+      updateCalculator();
+      // Get the calculated results to send to database
+      const results = {
+        initialCost: parseFloat(document.getElementById('initialCost').textContent.replace(/[$,]/g, '')) || 0,
+        revisionCost: parseFloat(document.getElementById('revisionCost').textContent.replace(/[$,]/g, '')) || 0,
+        totalCost: parseFloat(document.getElementById('totalCost').textContent.replace(/[$,]/g, '')) || 0,
+        totalHours: parseFloat(document.getElementById('totalHours').textContent.replace(' hours', '')) || 0,
+        automationHours: parseFloat(document.getElementById('automationHours').textContent.replace(/[~hours]/g, '')) || 0,
+        timeSaved: parseFloat(document.getElementById('timeSaved').textContent.replace(' hours', '')) || 0,
+        potentialSavings: parseFloat(document.getElementById('potentialSavings').textContent.replace(/[$,]/g, '')) || 0,
+        savingsPercentage: parseInt(document.getElementById('savingsPercentage').textContent.replace('%', '')) || 0,
+        errorCount: parseInt(document.getElementById('errorCount').textContent) || 0,
+        errorCost: parseFloat(document.getElementById('errorCost').textContent.replace(/[$,]/g, '')) || 0
+      };
+      // Combine input data with calculated results
+      const fullData = { ...data, ...results };
+      // Log the data in the background
+      // const msgDiv = document.getElementById('calculatorSubmitMsg');
+      // msgDiv.textContent = 'Calculated!';
+      // msgDiv.style.color = '#28a745';
       try {
-        const response = await fetch('/.netlify/functions/log-calculator-function', {
+        await fetch('/.netlify/functions/log-calculator-function', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
+          body: JSON.stringify(fullData)
         });
-        const result = await response.json();
-        if (response.ok && result.success) {
-          msgDiv.textContent = 'Calculator data submitted!';
-          msgDiv.style.color = '#28a745';
-        } else {
-          msgDiv.textContent = 'Error: ' + (result.error || 'Could not submit data.');
-          msgDiv.style.color = '#d32f2f';
-        }
+        // Do not show any data logging message to the user
       } catch (err) {
-        msgDiv.textContent = 'Network error: Could not submit data.';
-        msgDiv.style.color = '#d32f2f';
+        // Silently fail, do not show error to user
       }
     });
   </script>
