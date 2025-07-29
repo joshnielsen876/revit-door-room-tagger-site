@@ -1,457 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Stop wasting time manually tagging doors and rooms in Revit. This automation tool is perfect for architects designing apartments, hotels, and other multi-unit buildings.">
-  <meta name="keywords" content="Revit, pyRevit, BIM, room tagging, door tagging, architecture automation, apartment layout, corridor layout">
-  <title>Revit Door & Room Tagger</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">
+    <title>Phlox Engineering - Revit Automation Solutions</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Revit, pyRevit, BIM, room tagging, door tagging, architecture automation, apartment layout, corridor layout" name="keywords">
+    <meta content="Stop wasting time manually tagging doors and rooms in Revit. This automation tool is perfect for architects designing apartments, hotels, and other multi-unit buildings." name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Saira:wght@500;600;700&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
 </head>
+
 <body>
-  <header class="hero">
-    <div class="container">
-      <h1>Stop Wasting Hours Tagging Doors in Revit</h1>
-      <p class="subheadline">Architects lose time and money on repetitive, error-prone door and room tagging. This drop-in tool automates it in seconds.</p>
-      <a href="mailto:josh@phloxengineering.com" class="cta-btn">Get the Tool</a>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
     </div>
-  </header>
+    <!-- Spinner End -->
 
-  <section class="about container">
-    <h2>Meet the Creator</h2>
-    <div class="creator-profile">
-      <img src="creator-profile.jpg" alt="Josh Nielsen, PhD" class="creator-photo">
-      <div class="creator-info">
-        <p>Hi, I'm Josh Nielsen, PhD. I build tools that eliminate the most drudgerous and error-prone parts of architecture workflows so you can focus on better design.</p>
-        <p><a href="https://www.linkedin.com/in/joshua-nielsen-phd-40a185113/" target="_blank" rel="noopener" class="linkedin-link">Connect on LinkedIn</a></p>
-      </div>
-    </div>
-  </section>
-  
-  <section class="features container">
-    <h3>Why Use This Tool?</h3>
-    <ul>
-      <li>Tag hundreds of rooms and doors in seconds with no manual work</li>
-      <li>Eliminate errors that cause expensive revisions</li>
-      <li>Seamless pyRevit integration, ready in minutes</li>
-      <li>Supports complex layouts: T-shapes, L-shapes, U-shapes, and more</li>
-      <li>Handles cascading inner room logic (bedrooms, baths, etc.) automatically</li>
-      <li>Built for Revit 2020 and newer (including 2026)</li>
-    </ul>
-  </section>
-
-
-
-  <section class="demo">
-    <div class="container">
-      <h2>See It in Action</h2>
-      <!-- <div class="demo-media before-after">
-        <div class="demo-image-block">
-          <div class="demo-caption">Before</div>
-          <a href="Before.png" target="_blank" rel="noopener">
-            <img src="Before.png" alt="Before using Revit Door & Room Tagger" class="demo-image" />
-          </a>
-        </div>
-        <div class="demo-image-block">
-          <div class="demo-caption">After</div>
-          <a href="After.png" target="_blank" rel="noopener">
-            <img src="After.png" alt="After using Revit Door & Room Tagger" class="demo-image" />
-          </a>
-        </div>
-      </div> -->
-      <p class="demo-description">Go from blank tags to fully labeled rooms and doors in seconds.</p>
-    </div>
-    <div class="video-section">
-      <div class="video-carousel">
-        <button class="carousel-arrow left" aria-label="Previous video">&#8592;</button>
-        <div class="video-container">
-          <video id="demoVideo1" class="carousel-video active" width="720" controls>
-            <source src="L shape segment demo.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <video id="demoVideo2" class="carousel-video" width="720" controls>
-            <source src="T shape selection demo.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <div id="videoCaption" class="video-caption">Automatically tag doors based on identified corridor segments</div>
-        </div>
-        <button class="carousel-arrow right" aria-label="Next video">&#8594;</button>
-      </div>
-    </div>
-    <script>
-      const videoCaptions = [
-        'Automatically tag doors based on identified corridor segments',
-        'Automatically tag doors based on user-defined sequence'
-      ];
-      let currentVideo = 0;
-      const videoElements = [
-        document.getElementById('demoVideo1'),
-        document.getElementById('demoVideo2')
-      ];
-      const captionElement = document.getElementById('videoCaption');
-      const leftArrow = document.querySelector('.carousel-arrow.left');
-      const rightArrow = document.querySelector('.carousel-arrow.right');
-      
-      function updateVideo() {
-        // Hide all videos
-        videoElements.forEach(video => {
-          video.classList.remove('active');
-          video.pause();
-        });
-        
-        // Show current video
-        videoElements[currentVideo].classList.add('active');
-        videoElements[currentVideo].play();
-        
-        // Update caption
-        captionElement.style.opacity = '0';
-        setTimeout(() => {
-          captionElement.textContent = videoCaptions[currentVideo];
-          captionElement.style.opacity = '1';
-        }, 150);
-      }
-      
-      leftArrow.addEventListener('click', () => {
-        currentVideo = (currentVideo - 1 + videoElements.length) % videoElements.length;
-        updateVideo();
-      });
-      rightArrow.addEventListener('click', () => {
-        currentVideo = (currentVideo + 1) % videoElements.length;
-        updateVideo();
-      });
-    </script>
-    <style>
-      .video-carousel {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        margin-top: 1rem;
-      }
-      .carousel-arrow {
-        font-size: 2rem;
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: #333;
-        padding: 0 0.5rem;
-      }
-      .carousel-arrow:focus {
-        outline: 2px solid #0078d7;
-      }
-      .carousel-video {
-        max-width: 100%;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      }
-    </style>
-  </section>
-
-  <section class="calculator container">
-    <h2>Calculate Your Current Costs</h2>
-    <p class="calculator-intro">See how much time and money you're spending on manual door and room tagging. Adjust the values below to match your typical multi-unit project.</p>
-    
-    <div class="calculator-grid">
-      <div class="calculator-form">
-        <div class="input-group">
-          <label for="numRooms">Number of rooms</label>
-          <input type="number" id="numRooms" value="120" min="1" max="1000">
-        </div>
-        <div class="input-group">
-          <label for="avgTagsPerRoom">Average tags per room 
-            <span class="tooltip" title="Includes closets, bathrooms, mechanical rooms, as well as building-wide tags like stairwells.">ⓘ</span>
-          </label>
-          <input type="number" id="avgTagsPerRoom" value="8" min="1" max="10" step="0.5">
-        </div>
-        <div class="input-group">
-          <label for="taggingRate">Average tagging rate (tags/hour)
-            <span class="tooltip" title="Realistic production tagging rate after accounting for plan reading, coordination checks, and inevitable interruptions.">ⓘ</span>
-          </label>
-          <input type="number" id="taggingRate" value="40" min="1" max="100">
-        </div>
-        <div class="input-group">
-          <label for="revisionHours">Hours spent each time renumbering after client changes</label>
-          <input type="number" id="revisionHours" value="4" min="0" step="0.5">
-        </div>
-        <div class="input-group">
-          <label for="numRevisions">Number of times you had to make those changes</label>
-          <input type="number" id="numRevisions" value="6" min="0">
-        </div>
-        <div class="input-group">
-          <label for="hourlyRate">Average hourly rate from all parties (drafters, architects, etc.)($)</label>
-          <input type="number" id="hourlyRate" value="65" min="10" max="200">
-        </div>
-      </div>
-      
-      <div class="calculator-results">
-        <div class="results-card">
-          <h3>Your Current Costs</h3>
-          <div class="cost-breakdown">
-            <div class="cost-item">
-              <span class="cost-label">Initial tagging (<span id="initialHoursResult">0</span> hours):</span>
-              <span class="cost-value" id="initialCost">$360</span>
-            </div>
-            <div class="cost-item">
-              <span class="cost-label">Revision work (<span id="revisionHoursResult">0</span> hours):</span>
-              <span class="cost-value" id="revisionCost">$540</span>
-            </div>
-            <div class="cost-item total">
-              <span class="cost-label">Total cost:</span>
-              <span class="cost-value" id="totalCost">$1,125</span>
-            </div>
-          </div>
-          
-          <div class="time-breakdown">
-            <h4>Time Breakdown</h4>
-            <div class="time-item">
-              <span class="time-label">Total hours:</span>
-              <span class="time-value" id="totalHours">25 hours</span>
-            </div>
-            <div class="time-item">
-              <span class="time-label">With automation:</span>
-              <span class="time-value automation" id="automationHours">~2 hours</span>
-            </div>
-            <div class="time-item">
-              <span class="time-label">Time saved:</span>
-              <span class="time-value savings" id="timeSaved">23 hours</span>
-            </div>
-          </div>
-          
-          <div class="savings-highlight">
-            <div class="savings-amount">Potential savings: <span id="potentialSavings">$1,035</span></div>
-            <div class="savings-percentage">That's <span id="savingsPercentage">92%</span> less time and cost!</div>
-          </div>
-          
-          <div class="error-cost-scenario">
-            <details>
-              <summary>What if one tag is wrong?</summary>
-              <div class="error-content">
-                <p>A single mislabeled door—especially one tied to fire ratings, access control, or unit layout—can easily cost $1,000–$5,000 in rework and schedule delays. On a <span id="errorRooms">120</span>-unit building with <span id="errorTags">960</span>+ tags, even a 1% error rate can mean tens of thousands in unexpected costs.</p>
-                <div class="error-calculation">
-                  <strong>Even a 1% error rate on <span id="errorTags2">960</span> tags = <span id="errorCount">10</span> mistakes × $2,000 avg correction = <span id="errorCost">$20,000</span>+ at risk</strong>
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-dark py-2 d-none d-md-flex">
+        <div class="container">
+            <div class="d-flex justify-content-between topbar">
+                <div class="top-info">
+                    <small class="me-3 text-white-50"><a href="#"><i class="fas fa-map-marker-alt me-2 text-secondary"></i></a>Kentucky, USA</small>
+                    <small class="me-3 text-white-50"><a href="#"><i class="fas fa-envelope me-2 text-secondary"></i></a>josh@phloxengineering.com</small>
                 </div>
+
+                <div class="top-link">
+                    <a href="https://www.linkedin.com/in/joshua-nielsen-phd-40a185113/" class="bg-light nav-fill btn btn-sm-square rounded-circle" target="_blank"><i class="fab fa-linkedin-in text-primary"></i></a>
+      </div>
+      </div>
+      </div>
+    </div>
+    <!-- Topbar End -->
+
+    <!-- Navbar Start -->
+    <div class="container-fluid bg-primary">
+        <div class="container">
+            <nav class="navbar navbar-dark navbar-expand-lg py-0">
+                <a href="index.html" class="navbar-brand">
+                    <h1 class="text-white fw-bold d-block">Phlox<span class="text-secondary">Engineering</span></h1>
+                </a>
+                <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse bg-transparent" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto mx-xl-auto p-0">
+                        <a href="index.html" class="nav-item nav-link active text-secondary">Home</a>
+                        <a href="about.html" class="nav-item nav-link">About</a>
+                        <a href="services.html" class="nav-item nav-link">Services</a>
+                        <a href="portfolio.html" class="nav-item nav-link">AutoTagger</a>
+                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    </div>
+                </div>
+                <div class="d-none d-xl-flex flex-shirink-0">
+                    <div id="phone-tada" class="d-flex align-items-center justify-content-center me-4">
+                        <a href="https://calendly.com/josh-phloxengineering/30min" class="position-relative animated tada infinite" target="_blank">
+                            <i class="fa fa-phone-alt text-white fa-2x"></i>
+                            <div class="position-absolute" style="top: -7px; left: 20px;">
+                                <span><i class="fa fa-comment-dots text-secondary"></i></span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="d-flex flex-column pe-4 border-end">
+                        <span class="text-white-50">Need automation?</span>
+                        <span class="text-secondary">Free 30-min consultation</span>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center ms-4 ">
+                        <a href="https://calendly.com/josh-phloxengineering/30min" target="_blank"><i class="bi bi-calendar text-white fa-2x"></i></a>
+                    </div>
+                </div>
+            </nav>
+      </div>
+    </div>
+    <!-- Navbar End -->
+  
+    <!-- Carousel Start -->
+    <div class="container-fluid px-0">
+        <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active" aria-current="true" aria-label="First slide"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="1" aria-label="Second slide"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                                <div class="carousel-item active">
+                    <img src="img/stock/man yawning at desk.jpg" class="img-fluid" alt="Man yawning at desk - repetitive work" style="object-fit: cover; height: 600px; width: 100%;">
+                    <div class="carousel-caption">
+                        <div class="container carousel-content">
+                            <h6 class="text-secondary h4 animated fadeInUp">Business Automation Solutions</h6>
+                            <h1 class="text-white display-1 mb-4 animated fadeInRight">Stop Wasting Time on Tasks That Don't Matter</h1>
+                            <p class="mb-4 text-white fs-5 animated fadeInDown">Bluegrass businesses lose money on repetitive, error-prone operations. I build custom automation tools that let you focus on what you do best.</p>
+                            <a href="https://calendly.com/josh-phloxengineering/30min" class="me-2" target="_blank"><button type="button" class="px-4 py-sm-3 px-sm-5 btn btn-primary rounded-pill carousel-content-btn1 animated fadeInLeft">Free Consultation</button></a>
+                            <a href="portfolio.html" class="ms-2"><button type="button" class="px-4 py-sm-3 px-sm-5 btn btn-primary rounded-pill carousel-content-btn2 animated fadeInRight">See Examples</button></a>
+                        </div>
+                    </div>
+      </div>
+                                <div class="carousel-item">
+                    <img src="img/stock/pexels-karolina-grabowska-7679649.jpg" class="img-fluid" alt="Success and satisfaction from automation" style="object-fit: cover; object-position: center; height: 600px; width: 100%;">
+                    <div class="carousel-caption">
+                        <div class="container carousel-content">
+                            <h6 class="text-secondary h4 animated fadeInUp">Custom Automation Solutions</h6>
+                            <h1 class="text-white display-1 mb-4 animated fadeInLeft">Transform Hours of Manual Work Into Minutes</h1>
+                            <p class="mb-4 text-white fs-5 animated fadeInDown">Transform hours of manual work into minutes of automated processing. Perfect accuracy, every time.</p>
+                            <a href="portfolio.html" class="me-2"><button type="button" class="px-4 py-sm-3 px-sm-5 btn btn-primary rounded-pill carousel-content-btn1 animated fadeInLeft">See Case Study</button></a>
+                            <a href="https://calendly.com/josh-phloxengineering/30min" class="ms-2" target="_blank"><button type="button" class="px-4 py-sm-3 px-sm-5 btn btn-primary rounded-pill carousel-content-btn2 animated fadeInRight">Get Started</button></a>
+        </div>
+        </div>
+      </div>
+    </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
+    <!-- Fact Start -->
+    <div class="container-fluid bg-secondary py-5">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".3s">
+                    <div class="text-center">
+                        <i class="fas fa-clock fa-3x text-primary mb-3"></i>
+                        <h4 class="text-white mb-2">Countless Hours</h4>
+                        <p class="text-white-50 mb-0">of busy work eliminated</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".5s">
+                    <div class="text-center">
+                        <i class="fas fa-check-circle fa-3x text-primary mb-3"></i>
+                        <h4 class="text-white mb-2">Perfect Accuracy</h4>
+                        <p class="text-white-50 mb-0">no more manual errors</p>
+                    </div>
+        </div>
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".7s">
+                    <div class="text-center">
+                        <i class="fas fa-cogs fa-3x text-primary mb-3"></i>
+                        <h4 class="text-white mb-2">Custom Solutions</h4>
+                        <p class="text-white-50 mb-0">built for your workflow</p>
+        </div>
+        </div>
+        </div>
+        </div>
+      </div>
+    <!-- Fact End -->
+
+    <!-- About Start -->
+    <div class="container-fluid py-5 my-5">
+        <div class="container pt-5">
+            <div class="row g-5">
+                <div class="col-lg-5 col-md-6 col-sm-12 wow fadeIn" data-wow-delay=".3s">
+                    <div class="h-100 position-relative">
+                        <img src="img/stock/pexels-roddy-mcgillivray-8099192-6034497.jpg" class="img-fluid w-75 rounded" alt="Modern urban development" style="margin-bottom: 25%; object-fit: cover; height: 300px;">
+                        <div class="position-absolute" style="top: 30%; left: 30%; width: 50%;">
+                            <img src="creator-profile.jpg" class="img-fluid rounded-circle border border-3 border-white shadow" alt="Josh Nielsen, PhD" style="object-fit: cover; height: 150px; width: 150px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-6 col-sm-12 wow fadeIn" data-wow-delay=".5s">
+                    <h5 class="text-primary">About Us</h5>
+                    <h1 class="mb-4">Meet Josh Nielsen, PhD - Your Automation Partner</h1>
+                    <p>Hi, I'm Josh Nielsen, PhD. I build tools that eliminate the most drudgerous and error-prone parts of business workflows so you can focus on what you do best.</p>
+                    <p class="mb-4">Bluegrass businesses lose money on repetitive, error-prone operations. From design to billing to management - you're wearing too many hats and none of them fit perfectly. Hours spent on manual processes that could be automated, leaving less time for what you actually love doing.</p>
+                    <a href="https://www.linkedin.com/in/joshua-nielsen-phd-40a185113/" class="btn btn-secondary rounded-pill px-5 py-3 text-white" target="_blank">Connect on LinkedIn</a>
+            </div>
+            </div>
+            </div>
+          </div>
+    <!-- About End -->
+
+    <!-- Services Start -->
+    <div class="container-fluid services py-5 mb-5">
+        <div class="container">
+            <div class="text-center mx-auto pb-5 wow fadeIn" data-wow-delay=".3s" style="max-width: 600px;">
+                <h5 class="text-primary">Our Solutions</h5>
+                <h1>Automation Built Specifically For Your Workflow</h1>
+            </div>
+            <div class="row g-5 services-inner">
+                                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".3s">
+                    <div class="services-item bg-light">
+                        <div class="p-4 text-center services-content">
+                            <div class="services-content-icon">
+                                <i class="fas fa-cogs fa-7x mb-4 text-primary"></i>
+                                <h4 class="mb-3">Process Automation</h4>
+                                <p class="mb-4">Automate repetitive tasks in any software system. Eliminate manual errors that cause expensive revisions.</p>
+                                <a href="services.html" class="btn btn-secondary text-white px-5 py-3 rounded-pill">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".5s">
+                    <div class="services-item bg-light">
+                        <div class="p-4 text-center services-content">
+                            <div class="services-content-icon">
+                                <i class="fas fa-code fa-7x mb-4 text-primary"></i>
+                                <h4 class="mb-3">Custom Software</h4>
+                                <p class="mb-4">Tailored solutions for your specific workflow. Seamless integration with your existing systems.</p>
+                                <a href="services.html" class="btn btn-secondary text-white px-5 py-3 rounded-pill">Learn More</a>
+            </div>
+          </div>
+          </div>
+                </div>
+                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".7s">
+                    <div class="services-item bg-light">
+                        <div class="p-4 text-center services-content">
+                            <div class="services-content-icon">
+                                <i class="fas fa-chart-line fa-7x mb-4 text-primary"></i>
+                                <h4 class="mb-3">Efficiency Gains</h4>
+                                <p class="mb-4">Transform hours of manual work into minutes of automated processing. Perfect accuracy, every time.</p>
+                                <a href="portfolio.html" class="btn btn-secondary text-white px-5 py-3 rounded-pill">See Case Study</a>
               </div>
-            </details>
           </div>
         </div>
       </div>
     </div>
-    <div style="text-align:center; margin-top: 24px;">
-      <button id="submitCalculatorData" class="cta-btn" type="button">Calculate</button>
-      <div id="calculatorSubmitMsg" style="margin-top:12px;font-size:1rem;"></div>
     </div>
-  </section>
-
-  <section class="what-you-get container">
-    <h2>What You Get</h2>
-    <ul>
-      <li><strong>Hours of work saved</strong> on every multi-unit project</li>
-      <li><strong>Peace of mind</strong> from consistent, correct tag sequencing</li>
-      <li><strong>More time</strong> for design and client collaboration</li>
-      <li><strong>No recurring cost</strong> — pay once, use forever</li>
-    </ul>
-  </section>
-
-  <section class="who-for container">
-    <h2>Who It's For</h2>
-    <p>Designed for architecture firms of any size using Revit for multi-unit residential, hospitality, or other multi-unit projects with sequential numbering. Perfect for teams looking to streamline documentation and focus on what matters most.</p>
-  </section>
-
-  <section class="testimonial container">
-    <blockquote>
-      "This is awesome! It saves us countless hours of busy work renumbering doors and room tags."
-      <cite>— Cash Moter, Joseph and Joseph Architecture, Louisville, KY</cite>
-    </blockquote>
-  </section>
-
-  <section class="pricing container">
-    <h2>One-Time, Value-Based Pricing</h2>
-    <div class="pricing-box">
-      <div class="price">Hit ROI on your first project!</div>
-      <ul>
-        <li>One-time license — no recurring fees</li>
-        <li>Pilot testing option available upon request</li>
-        <li>Fully installable tool with pyRevit integration guide</li>
-        <li>Lifetime use within your firm</li>
-        <li>Personalized onboarding and email support</li>
-        <li>Optional upgrades for future Revit versions or new features</li>
-      </ul>
-
     </div>
-  </section>
-  
+    <!-- Services End -->
 
 
 
-  <section class="contact container" id="contact">
-    <h2>Contact & Purchase</h2>
-    <form class="contact-form" id="contactForm">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" required>
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
-      <label for="message">Message</label>
-      <textarea id="message" name="message" rows="4" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-    <!-- <div class="purchase-box">
-      <button class="purchase-btn">Purchase Now</button>
-      <p class="purchase-note">(Secure payment link will be sent via email)</p>
-    </div> -->
-  </section>
-
-  <footer class="footer container">
-    <div class="footer-content">
-      <img src="Phlox logo only.png" alt="Phlox Engineering" class="footer-logo">
-      <p>&copy; 2025 Phlox Engineering. All rights reserved.</p>
+    <!-- CTA Section Start -->
+    <div class="container-fluid bg-secondary py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="text-white mb-4">Ready to Eliminate Repetitive Tasks?</h2>
+                    <p class="text-white-50 mb-4">Stop wasting time on manual processes. Let's discuss how automation can transform your workflow.</p>
+                    <a href="https://calendly.com/josh-phloxengineering/30min" class="btn btn-primary px-5 py-3 rounded-pill" target="_blank">Free 30-Min Consultation</a>
+                </div>
+            </div>
+        </div>
     </div>
-  </footer>
+    <!-- CTA Section End -->
 
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <h4 class="text-white mb-4">Phlox Engineering</h4>
+                    <p class="mb-4">Eliminating repetitive tasks so you can focus on what you do best.</p>
+                    <div class="d-flex pt-3">
+                        <a href="https://www.linkedin.com/in/joshua-nielsen-phd-40a185113/" class="btn btn-square btn-primary me-2" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="text-white mb-4">Quick Links</h4>
+                    <a class="btn btn-link text-white-50" href="about.html">About</a>
+                    <a class="btn btn-link text-white-50" href="services.html">Services</a>
+                    <a class="btn btn-link text-white-50" href="portfolio.html">AutoTagger</a>
+                    <a class="btn btn-link text-white-50" href="contact.html">Contact</a>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="text-white mb-4">Contact Info</h4>
+                    <p class="mb-2"><i class="fa fa-envelope me-3 text-secondary"></i>josh@phloxengineering.com</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3 text-secondary"></i>Kentucky, USA</p>
+                    <p class="mb-2"><i class="fa fa-calendar me-3 text-secondary"></i><a href="https://calendly.com/josh-phloxengineering/30min" class="text-white-50" target="_blank">Schedule Consultation</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+    <!-- Calculator Script -->
   <script>
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const message = document.getElementById('message').value;
-      const subject = encodeURIComponent('Revit Door & Room Tagger Inquiry');
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nMessage: ${message}`);
-      window.location.href = `mailto:info@phloxengineering.com?subject=${subject}&body=${body}`;
-    });
-  </script>
-
-  <script>
-    // Cost Calculator Functionality
-    function updateCalculator() {
-      // Get input values
-      const numRooms = parseFloat(document.getElementById('numRooms').value) || 0;
-      const avgTagsPerRoom = parseFloat(document.getElementById('avgTagsPerRoom').value) || 0;
-      const taggingRate = parseFloat(document.getElementById('taggingRate').value) || 1;
-      const revisionHours = parseFloat(document.getElementById('revisionHours').value) || 0;
-      const numRevisions = parseFloat(document.getElementById('numRevisions').value) || 0;
+        function calculateSavings() {
+            const numRooms = parseInt(document.getElementById('numRooms').value) || 0;
+            const numDoors = parseInt(document.getElementById('numDoors').value) || 0;
       const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
-
-      // Calculate total tags
-      const totalTags = numRooms * avgTagsPerRoom;
-      // Calculate initial hours as totalTags / taggingRate
-      const initialHours = totalTags / taggingRate;
-
-      // Calculate costs
-      const initialCost = initialHours * hourlyRate;
-      const revisionCost = revisionHours * numRevisions * hourlyRate;
-      const totalCost = initialCost + revisionCost;
-
-      // Calculate time
-      const totalHours = initialHours + (revisionHours * numRevisions);
-      const automationHours = Math.max(0.5, (totalTags / taggingRate) * 0.1); // Assume 90% time reduction
-      const timeSaved = totalHours - automationHours;
-      const automationCost = automationHours * hourlyRate;
-      const potentialSavings = totalCost - automationCost;
-      const savingsPercentage = totalCost > 0 ? Math.round((potentialSavings / totalCost) * 100) : 0;
-
-      // Calculate error cost scenario
-      const errorCount = Math.ceil(totalTags * 0.01); // 1% error rate
-      const errorCost = errorCount * 2000; // $2,000 average correction cost
-
-      // Update display
-      document.getElementById('initialCost').textContent = formatCurrency(initialCost);
-      document.getElementById('revisionCost').textContent = formatCurrency(revisionCost);
-      document.getElementById('totalCost').textContent = formatCurrency(totalCost);
-      document.getElementById('initialHoursResult').textContent = initialHours.toFixed(1);
-      document.getElementById('revisionHoursResult').textContent = (revisionHours * numRevisions).toFixed(1);
-      
-      document.getElementById('totalHours').textContent = `${totalHours.toFixed(1)} hours`;
-      document.getElementById('automationHours').textContent = `~${automationHours.toFixed(1)} hours`;
-      document.getElementById('timeSaved').textContent = `${timeSaved.toFixed(1)} hours`;
-      document.getElementById('potentialSavings').textContent = formatCurrency(potentialSavings);
-      document.getElementById('savingsPercentage').textContent = `${savingsPercentage}%`;
-
-      // Update error cost scenario
-      document.getElementById('errorRooms').textContent = numRooms;
-      document.getElementById('errorTags').textContent = totalTags;
-      document.getElementById('errorTags2').textContent = totalTags;
-      document.getElementById('errorCount').textContent = errorCount;
-      document.getElementById('errorCost').textContent = formatCurrency(errorCost);
-
-      // Add animation to savings highlight
-      const savingsHighlight = document.querySelector('.savings-highlight');
-      savingsHighlight.style.transform = 'scale(1.02)';
-      setTimeout(() => {
-        savingsHighlight.style.transform = 'scale(1)';
-      }, 200);
-    }
-
-    function formatCurrency(amount) {
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(amount);
-    }
-
-    // Only update results and log data when the button is pressed
-    document.addEventListener('DOMContentLoaded', function() {
-      // Show default calculated values on page load
-      updateCalculator();
-    });
-  </script>
-  <script>
-    // Session ID logic
-    function getSessionId() {
-      let sessionId = localStorage.getItem('calculatorSessionId');
-      if (!sessionId) {
-        sessionId = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
-        localStorage.setItem('calculatorSessionId', sessionId);
-      }
-      return sessionId;
-    }
-
-    document.getElementById('submitCalculatorData').addEventListener('click', async function() {
-      // Gather calculator data
-      const data = {
-        rooms: parseFloat(document.getElementById('numRooms').value) || 0,
-        tagsPerRoom: parseFloat(document.getElementById('avgTagsPerRoom').value) || 0,
-        taggingRate: parseFloat(document.getElementById('taggingRate').value) || 0,
-        revisionHours: parseFloat(document.getElementById('revisionHours').value) || 0,
-        revisionCount: parseFloat(document.getElementById('numRevisions').value) || 0,
-        hourlyRate: parseFloat(document.getElementById('hourlyRate').value) || 0,
-        sessionId: getSessionId()
-      };
-      // Update the calculator results
-      updateCalculator();
-      // Get the calculated results to send to database
-      const results = {
-        initialCost: parseFloat(document.getElementById('initialCost').textContent.replace(/[$,]/g, '')) || 0,
-        revisionCost: parseFloat(document.getElementById('revisionCost').textContent.replace(/[$,]/g, '')) || 0,
-        totalCost: parseFloat(document.getElementById('totalCost').textContent.replace(/[$,]/g, '')) || 0,
-        totalHours: parseFloat(document.getElementById('totalHours').textContent.replace(' hours', '')) || 0,
-        automationHours: parseFloat(document.getElementById('automationHours').textContent.replace(/[~hours]/g, '')) || 0,
-        timeSaved: parseFloat(document.getElementById('timeSaved').textContent.replace(' hours', '')) || 0,
-        potentialSavings: parseFloat(document.getElementById('potentialSavings').textContent.replace(/[$,]/g, '')) || 0,
-        savingsPercentage: parseInt(document.getElementById('savingsPercentage').textContent.replace('%', '')) || 0,
-        errorCount: parseInt(document.getElementById('errorCount').textContent) || 0,
-        errorCost: parseFloat(document.getElementById('errorCost').textContent.replace(/[$,]/g, '')) || 0
-      };
-      // Combine input data with calculated results
-      const fullData = { ...data, ...results };
-      // Log the data in the background
-      // const msgDiv = document.getElementById('calculatorSubmitMsg');
-      // msgDiv.textContent = 'Calculated!';
-      // msgDiv.style.color = '#28a745';
-      try {
-        await fetch('/.netlify/functions/log-calculator-function', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(fullData)
-        });
-        // Do not show any data logging message to the user
-      } catch (err) {
-        // Silently fail, do not show error to user
-      }
-    });
+            const timePerItem = parseFloat(document.getElementById('timePerItem').value) || 0;
+            
+            const totalItems = numRooms + numDoors;
+            const totalMinutes = totalItems * timePerItem;
+            const totalHours = totalMinutes / 60;
+            const totalCost = totalHours * hourlyRate;
+            
+            // With automation (90% time reduction)
+            const automatedHours = totalHours * 0.1;
+            const automatedCost = automatedHours * hourlyRate;
+            const moneySaved = totalCost - automatedCost;
+            
+            document.getElementById('timeSaved').textContent = Math.round(totalHours * 0.9);
+            document.getElementById('moneySaved').textContent = '$' + Math.round(moneySaved);
+            
+            let impact = '';
+            if (moneySaved > 0) {
+                impact = `Automation could save you ${Math.round(totalHours * 0.9)} hours and $${Math.round(moneySaved)} per project.`;
+            } else {
+                impact = 'Enter your numbers above to see the impact';
+            }
+            document.getElementById('automationImpact').textContent = impact;
+        }
+        
+        // Calculate on page load
+        window.onload = function() {
+            calculateSavings();
+        };
   </script>
 </body>
+
 </html> 

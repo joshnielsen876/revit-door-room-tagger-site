@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Portfolio - Phlox Engineering</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Revit automation case study, door tagging, room tagging, pyRevit, BIM automation" name="keywords">
+    <meta content="See how our Revit automation solutions transform workflows. Real case studies showing significant time savings and 100% accuracy." name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Saira:wght@500;600;700&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-dark py-2 d-none d-md-flex">
+        <div class="container">
+            <div class="d-flex justify-content-between topbar">
+                <div class="top-info">
+                    <small class="me-3 text-white-50"><a href="#"><i class="fas fa-map-marker-alt me-2 text-secondary"></i></a>Kentucky, USA</small>
+                    <small class="me-3 text-white-50"><a href="#"><i class="fas fa-envelope me-2 text-secondary"></i></a>josh@phloxengineering.com</small>
+                </div>
+
+                <div class="top-link">
+                    <a href="https://www.linkedin.com/in/joshua-nielsen-phd-40a185113/" class="bg-light nav-fill btn btn-sm-square rounded-circle" target="_blank"><i class="fab fa-linkedin-in text-primary"></i></a>
+                </div>
+      </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+    <!-- Navbar Start -->
+    <div class="container-fluid bg-primary">
+        <div class="container">
+            <nav class="navbar navbar-dark navbar-expand-lg py-0">
+                <a href="index.html" class="navbar-brand">
+                    <h1 class="text-white fw-bold d-block">Phlox<span class="text-secondary">Engineering</span></h1>
+                </a>
+                <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse bg-transparent" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto mx-xl-auto p-0">
+                        <a href="index.html" class="nav-item nav-link">Home</a>
+                        <a href="about.html" class="nav-item nav-link">About</a>
+                        <a href="services.html" class="nav-item nav-link">Services</a>
+                        <a href="portfolio.html" class="nav-item nav-link active text-secondary">AutoTagger</a>
+                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    </div>
+                </div>
+                <div class="d-none d-xl-flex flex-shirink-0">
+                    <div id="phone-tada" class="d-flex align-items-center justify-content-center me-4">
+                        <a href="https://calendly.com/josh-phloxengineering/30min" class="position-relative animated tada infinite" target="_blank">
+                            <i class="fa fa-phone-alt text-white fa-2x"></i>
+                            <div class="position-absolute" style="top: -7px; left: 20px;">
+                                <span><i class="fa fa-comment-dots text-secondary"></i></span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="d-flex flex-column pe-4 border-end">
+                        <span class="text-white-50">Need automation?</span>
+                        <span class="text-secondary">Free 30-min consultation</span>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center ms-4 ">
+                        <a href="https://calendly.com/josh-phloxengineering/30min" target="_blank"><i class="bi bi-calendar text-white fa-2x"></i></a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        </div>
+    <!-- Navbar End -->
+
+        <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/stock/pexels-gokceakyildiz-1161898-4623072.jpg') center/cover;">
+        <div class="container py-5">
+            <h1 class="display-3 text-white mb-3 animated slideInDown">AutoTagger</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="text-white" href="index.html">Home</a></li>
+                    <li class="breadcrumb-item text-white active" aria-current="page">AutoTagger</li>
+                </ol>
+            </nav>
+      </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Project Start -->
+    <div class="container-fluid py-5 my-5">
+        <div class="container">
+            <div class="text-center mx-auto pb-5 wow fadeIn" data-wow-delay=".3s" style="max-width: 600px;">
+                <h5 class="text-primary">AutoTagger</h5>
+                <h1>Revit Door & Room Tagging Automation</h1>
+                <p class="mb-4">A real-world example of how automation transforms architectural workflows</p>
+            </div>
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-10">
+                    <div class="position-relative">
+                        <video class="img-fluid rounded shadow" autoplay muted loop style="width: 100%; height: 600px; object-fit: cover;">
+                            <source src="Auto demo.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-5">
+                <!-- <div class="col-lg-6 wow fadeIn" data-wow-delay=".3s">
+                    <div class="position-relative">
+                        <video class="img-fluid rounded" controls style="width: 100%; height: 300px; object-fit: cover;">
+            <source src="L shape segment demo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeIn" data-wow-delay=".5s">
+                    <div class="position-relative">
+                        <video class="img-fluid rounded" controls style="width: 100%; height: 300px; object-fit: cover;">
+            <source src="T shape selection demo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+                    </div>
+                </div> -->
+        </div>
+      </div>
+    </div>
+    <!-- Project End -->
+
+    <!-- Project Details Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-8 wow fadeIn" data-wow-delay=".3s">
+                    <h2 class="mb-4">The Challenge</h2>
+                    <p class="mb-4">Architects designing multi-unit buildings (apartments, hotels, etc.) spend hours manually tagging doors and rooms in Revit. This repetitive task is:</p>
+                    <ul class="mb-4">
+                        <li>Time-consuming (requires extensive renumbering after every client change)</li>
+                        <li>Error-prone (manual mistakes cause expensive revisions)</li>
+                        <li>Boring and demotivating for skilled professionals</li>
+                        <li>Not scalable as project complexity increases</li>
+                    </ul>
+                    
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <img src="img/stock/pexels-eye4dtail-129494.jpg" class="img-fluid rounded shadow" alt="Large apartment complex showing scale of multi-unit projects" style="object-fit: cover; height: 250px; width: 100%;">
+                            <p class="text-muted small mt-2">Large multi-unit projects can have hundreds of rooms requiring consistent tagging</p>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="img/stock/pexels-zulfugarkarimov-33178685.jpg" class="img-fluid rounded shadow" alt="High-rise residential building" style="object-fit: cover; height: 250px; width: 100%;">
+                            <p class="text-muted small mt-2">Each floor adds complexity to the tagging and coordination process</p>
+                        </div>
+                    </div>
+
+                    <h2 class="mb-4">The Solution</h2>
+                    <p class="mb-4">I developed a custom pyRevit tool that automatically tags hundreds of doors and rooms in seconds, with perfect accuracy. The tool:</p>
+                    <ul class="mb-4">
+                        <li>Analyzes room layouts and door positions</li>
+                        <li>Handles complex shapes (T-shapes, L-shapes, U-shapes)</li>
+                        <li>Applies cascading logic for inner rooms (bedrooms, bathrooms, etc.)</li>
+                        <li>Integrates seamlessly with existing Revit workflows</li>
+                        <li>Works with Revit 2020 and newer versions</li>
+                    </ul>
+
+                    <h2 class="mb-4">What Our Clients Say</h2>
+                    <div class="bg-light p-4 rounded mb-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 text-center">
+                                <i class="fas fa-quote-left fa-3x text-primary"></i>
+        </div>
+                            <div class="col-md-10">
+                                <blockquote class="mb-0">
+                                    <p class="fs-5 fst-italic">"This is awesome! It saves us countless hours of busy work spent renumbering door and room tags."</p>
+                                    <footer class="text-primary fw-bold">— Cash Moter, Joseph and Joseph Architecture</footer>
+                                </blockquote>
+        </div>
+        </div>
+        </div>
+      </div>
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".5s">
+                    <div class="bg-light p-4 rounded">
+                        <h4 class="mb-4">Technical Details</h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-3"><i class="fas fa-code me-2 text-primary"></i>Python-based pyRevit tool</li>
+                            <li class="mb-3"><i class="fas fa-cogs me-2 text-primary"></i>Custom automation logic</li>
+                            <li class="mb-3"><i class="fas fa-shield-alt me-2 text-primary"></i>Error handling & validation</li>
+                            <li class="mb-3"><i class="fas fa-plug me-2 text-primary"></i>Seamless Revit integration</li>
+                            <li class="mb-3"><i class="fas fa-users me-2 text-primary"></i>User-friendly interface</li>
+                            <li class="mb-3"><i class="fas fa-download me-2 text-primary"></i>Easy installation</li>
+                        </ul>
+                        
+                        <h4 class="mb-4 mt-5">Demo Videos</h4>
+                        <div class="mb-3">
+                            <a href="L shape segment demo.mp4" class="btn btn-primary btn-sm w-100 mb-2" target="_blank">
+                                <i class="fas fa-play me-2"></i>Segment-driven
+                            </a>
+                        </div>
+                        <div class="mb-3">
+                            <a href="T shape selection demo.mp4" class="btn btn-primary btn-sm w-100" target="_blank">
+                                <i class="fas fa-play me-2"></i>Selection-driven
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Project Details End -->
+
+    <!-- Calculator Section Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+                            <div class="text-center mx-auto pb-5 wow fadeIn" data-wow-delay=".3s" style="max-width: 600px;">
+                    <h5 class="text-primary">Cost Calculator</h5>
+                    <h1>Calculate Your Project's Potential Savings</h1>
+                    <p class="mb-4">Think about your current or most recent multi-unit project. How much could AutoTagger have saved you?</p>
+                </div>
+            <div class="row g-5">
+                <div class="col-lg-6 wow fadeIn" data-wow-delay=".3s">
+                    <div class="bg-white p-4 rounded shadow">
+                        <h4 class="mb-4 fw-bold">Your Project's Costs</h4>
+                                                    <div class="mb-3">
+                                <label for="numRooms" class="form-label">Number of rooms in your project</label>
+                                <input type="number" class="form-control" id="numRooms" value="120" min="1" max="1000">
+                            </div>
+                                                    <div class="mb-3">
+                                <label for="tagsPerRoom" class="form-label">Average tags per room in your project <i class="fas fa-info-circle text-muted" title="Number of tags (closets, bathrooms, etc.) per room on average"></i></label>
+                                <input type="number" class="form-control" id="tagsPerRoom" value="8" min="1" max="20" step="0.5">
+                            </div>
+                                                    <div class="mb-3">
+                                <label for="taggingRate" class="form-label">Your manual tagging rate (tags/hour) <i class="fas fa-info-circle text-muted" title="Realistic rate accounting for interruptions, breaks, and procrastination (don't worry, we all get it)."></i></label>
+                                <input type="number" class="form-control" id="taggingRate" value="40" min="10" max="100">
+                            </div>
+                                                    <div class="mb-3">
+                                <label for="revisionHours" class="form-label">Hours you spent renumbering after client changes</label>
+                                <input type="number" class="form-control" id="revisionHours" value="4" min="0" max="20" step="0.5">
+                            </div>
+                                                    <div class="mb-3">
+                                <label for="revisionCount" class="form-label">How many times you had to make those changes</label>
+                                <input type="number" class="form-control" id="revisionCount" value="6" min="0" max="20">
+                            </div>
+                                                    <div class="mb-3">
+                                <label for="hourlyRate" class="form-label">Your team's average hourly rate ($)</label>
+                                <input type="number" class="form-control" id="hourlyRate" value="65" min="25" max="200">
+                            </div>
+                        <button type="button" class="btn btn-primary px-4 py-2" onclick="calculateSavings()">Calculate</button>
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeIn" data-wow-delay=".5s">
+                    <div class="bg-primary p-4 rounded text-white">
+                        <h4 class="mb-4 fw-bold">Your Project's Costs</h4>
+                                                <div class="mb-3">
+                            <div class="d-flex justify-content-between text-white">
+                                <span>Initial tagging (<span id="initialHours">0</span> hours):</span>
+                                <span id="initialCost">$0</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between text-white">
+                                <span>Revision work (<span id="revisionHoursDisplay">0</span> hours):</span>
+                                <span id="revisionCost">$0</span>
+                            </div>
+                        </div>
+                        <div class="mb-3 border-top border-white pt-2">
+                            <div class="d-flex justify-content-between fw-bold text-decoration-underline text-white">
+                                <span>Total cost:</span>
+                                <span id="totalCost">$0</span>
+            </div>
+          </div>
+          
+                        <h5 class="mt-4 mb-3 text-white">Time Breakdown</h5>
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between text-white">
+                                <span>Total hours:</span>
+                                <span id="totalHours">0</span>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between text-white">
+                                <span>With automation:</span>
+                                <span id="automationHours">~0</span>
+            </div>
+            </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between text-white">
+                                <span>Time saved:</span>
+                                <span id="timeSaved">0</span>
+            </div>
+          </div>
+          
+                                                                        <div class="bg-secondary p-3 rounded mt-4">
+                            <h3 class="mb-2 fw-bold text-white">Potential savings: <span id="potentialSavings">$0</span>!</h3>
+                            <!-- <p class="mb-0 small text-white">That's <span id="savingsPercentage">0</span>% less time and cost!</p> -->
+          </div>
+          
+                                                    <div class="mt-3">
+                                <a href="javascript:void(0)" class="text-white text-decoration-none fw-bold" onclick="toggleErrorImpact()">
+                                    <i class="fas fa-play me-1" id="errorIcon"></i>What if one tag is wrong?
+                                </a>
+                                <div id="errorImpact" class="mt-3 p-3 bg-light rounded" style="display: none;">
+                                    <p class="mb-0 text-dark small" id="errorDetails">Even a 1% error rate could mean <strong>${errorCount} mistakes</strong> on your project. Each one might seem small, but wrong tags cascade into coordination issues with contractors, expensive rework, and schedule delays. What starts as a $<span id="errorCost">0</span> "quick fix" often becomes a much bigger problem, potentially to the tune of 4- or even 5-digit costs.</p>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <!-- Calculator Section End -->
+
+    <!-- Testimonial Start -->
+    <div class="container-fluid bg-secondary py-5">
+        <div class="container">
+            <div class="text-center mx-auto pb-5 wow fadeIn" data-wow-delay=".3s" style="max-width: 600px;">
+                <h5 class="text-primary">What This Means</h5>
+                <h1 class="text-white">Real Impact on Real Projects</h1>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".3s">
+                    <div class="bg-light p-4 rounded text-center">
+                        <i class="fas fa-clock fa-3x text-primary mb-3"></i>
+                        <h5>Time Savings</h5>
+                        <p>What used to take hours now takes minutes. Architects can focus on design instead of data entry.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".5s">
+                    <div class="bg-light p-4 rounded text-center">
+                        <i class="fas fa-dollar-sign fa-3x text-primary mb-3"></i>
+                        <h5>Cost Reduction</h5>
+                        <p>Eliminate expensive revision cycles caused by manual tagging errors. Perfect accuracy every time.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 wow fadeIn" data-wow-delay=".7s">
+                    <div class="bg-light p-4 rounded text-center">
+                        <i class="fas fa-smile fa-3x text-primary mb-3"></i>
+                        <h5>Team Satisfaction</h5>
+                        <p>Skilled professionals can focus on creative work instead of repetitive tasks. Higher job satisfaction.</p>
+                    </div>
+                </div>
+          </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+
+    <!-- CTA Section Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="mb-4">Ready for Your Own Success Story?</h2>
+                    <p class="mb-4">Let's discuss how automation can transform your workflow and eliminate the repetitive tasks that are holding your business back.</p>
+                    <a href="https://calendly.com/josh-phloxengineering/30min" class="btn btn-primary px-5 py-3 rounded-pill" target="_blank">Free 30-Min Consultation</a>
+      </div>
+    </div>
+    </div>
+    </div>
+    <!-- CTA Section End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <h4 class="text-white mb-4">Phlox Engineering</h4>
+                    <p class="mb-4">Eliminating repetitive tasks so you can focus on what you do best.</p>
+                    <div class="d-flex pt-3">
+                        <a href="https://www.linkedin.com/in/joshua-nielsen-phd-40a185113/" class="btn btn-square btn-primary me-2" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="text-white mb-4">Quick Links</h4>
+                    <a class="btn btn-link text-white-50" href="about.html">About</a>
+                    <a class="btn btn-link text-white-50" href="services.html">Services</a>
+                    <a class="btn btn-link text-white-50" href="portfolio.html">AutoTagger</a>
+                    <a class="btn btn-link text-white-50" href="contact.html">Contact</a>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="text-white mb-4">Contact Info</h4>
+                    <p class="mb-2"><i class="fa fa-envelope me-3 text-secondary"></i>josh@phloxengineering.com</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3 text-secondary"></i>Kentucky, USA</p>
+                    <p class="mb-2"><i class="fa fa-calendar me-3 text-secondary"></i><a href="https://calendly.com/josh-phloxengineering/30min" class="text-white-50" target="_blank">Schedule Consultation</a></p>
+      </div>
+      </div>
+    </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+    
+    <!-- Calculator Script -->
+  <script>
+        function calculateSavings() {
+      // Get input values
+            const rooms = parseInt(document.getElementById('numRooms').value) || 0;
+            const tagsPerRoom = parseFloat(document.getElementById('tagsPerRoom').value) || 0;
+            const taggingRate = parseFloat(document.getElementById('taggingRate').value) || 0;
+      const revisionHours = parseFloat(document.getElementById('revisionHours').value) || 0;
+            const revisionCount = parseInt(document.getElementById('revisionCount').value) || 0;
+      const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+
+      // Calculate total tags
+            const totalTags = rooms * tagsPerRoom;
+            
+            // Calculate initial tagging time and cost
+      const initialHours = totalTags / taggingRate;
+            const initialCost = initialHours * hourlyRate;
+            
+            // Calculate revision time and cost
+            const totalRevisionHours = revisionHours * revisionCount;
+            const revisionCost = totalRevisionHours * hourlyRate;
+
+            // Calculate total costs
+      const totalCost = initialCost + revisionCost;
+            const totalHours = initialHours + totalRevisionHours;
+
+            // Calculate automation savings (95% time reduction)
+            const automationHours = totalHours * 0.05;
+      const timeSaved = totalHours - automationHours;
+            const potentialSavings = totalCost - (automationHours * hourlyRate);
+            const savingsPercentage = Math.round((potentialSavings / totalCost) * 100);
+
+      // Update display
+                document.getElementById('initialHours').textContent = initialHours.toFixed(1);
+                document.getElementById('initialCost').textContent = '$' + Math.round(initialCost);
+                document.getElementById('revisionHoursDisplay').textContent = totalRevisionHours.toFixed(1);
+                document.getElementById('revisionCost').textContent = '$' + Math.round(revisionCost);
+            document.getElementById('totalCost').textContent = '$' + Math.round(totalCost);
+            document.getElementById('totalHours').textContent = totalHours.toFixed(1);
+            document.getElementById('automationHours').textContent = '~' + automationHours.toFixed(1);
+            document.getElementById('timeSaved').textContent = timeSaved.toFixed(1);
+            document.getElementById('potentialSavings').textContent = '$' + Math.round(potentialSavings);
+            document.getElementById('savingsPercentage').textContent = savingsPercentage;
+            
+            // Log to database
+            logCalculatorData({
+                rooms,
+                tagsPerRoom,
+                taggingRate,
+                revisionHours,
+                revisionCount,
+                hourlyRate,
+                initialCost,
+                revisionCost,
+                totalCost,
+                totalHours,
+                automationHours,
+                timeSaved,
+                potentialSavings,
+                savingsPercentage
+            });
+        }
+        
+        function logCalculatorData(data) {
+            // Generate session ID
+            const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            
+            // Add session ID to data
+            const logData = {
+                ...data,
+                sessionId,
+                errorCount: 0,
+                errorCost: 0
+            };
+            
+            // Send to Netlify function
+            fetch('/.netlify/functions/log-calculator-function', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(logData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Calculator data logged:', data);
+            })
+            .catch(error => {
+                console.error('Error logging calculator data:', error);
+            });
+        }
+        
+                    function toggleErrorImpact() {
+                const errorImpact = document.getElementById('errorImpact');
+                const errorIcon = document.getElementById('errorIcon');
+                const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+                const rooms = parseInt(document.getElementById('numRooms').value) || 0;
+                const tagsPerRoom = parseFloat(document.getElementById('tagsPerRoom').value) || 0;
+                
+                // Calculate cascading error costs
+                const totalTags = rooms * tagsPerRoom;
+                const errorRate = 0.01; // 1% error rate
+                const errorCount = Math.round(totalTags * errorRate);
+                const baseErrorCost = hourlyRate * 2; // 2 hours per error
+                const cascadingCost = hourlyRate * 8; // 8 hours for downstream issues
+                const totalErrorCost = errorCount * (baseErrorCost + cascadingCost);
+                
+                if (errorImpact.style.display === 'none') {
+                    errorImpact.style.display = 'block';
+                    errorIcon.className = 'fas fa-chevron-down me-1';
+                    document.getElementById('errorCost').textContent = Math.round(baseErrorCost);
+                    document.getElementById('errorDetails').innerHTML = `Even a 1% error rate could mean <strong>${errorCount} mistakes</strong> on your project. Each one might seem small, but wrong tags cascade into coordination issues with contractors, expensive rework, and schedule delays. These avoidable mistakes can quickly grow into a 4- or 5-digit cost fix.`;
+                } else {
+                    errorImpact.style.display = 'none';
+                    errorIcon.className = 'fas fa-play me-1';
+                }
+            }
+        
+        // Calculate on page load
+        window.onload = function() {
+            calculateSavings();
+        };
+  </script>
+</body>
+
+</html> 
