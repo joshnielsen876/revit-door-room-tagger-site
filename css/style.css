@@ -217,6 +217,7 @@
     opacity: 1;
     border: 0;
     border-radius: 20px;
+    min-width: 160px;
 }
 
 .carousel-caption .carousel-content a button.carousel-content-btn1:hover {
@@ -234,6 +235,7 @@
     opacity: 1;
     border: 0;
     border-radius: 20px;
+    min-width: 160px;
 }
 
 .carousel-caption .carousel-content a button.carousel-content-btn2:hover {
@@ -294,6 +296,7 @@
 
     .carousel-item p {
         font-size: 14px !important;
+        display: none !important;
     }
 }
 
