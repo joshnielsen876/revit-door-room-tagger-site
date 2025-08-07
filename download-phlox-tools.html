@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PhloxTools Download - Installation Guide</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="PhloxTools Download and Installation Guide" name="description">
+    <meta content="PhloxTools, Revit, Automation, pyRevit" name="keywords">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5">
+        <a href="index.html" class="navbar-brand d-flex align-items-center">
+            <h1 class="m-0 text-primary">Phlox Engineering</h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-4 py-lg-0">
+                <a href="index.html" class="nav-item nav-link">Home</a>
+                <a href="about.html" class="nav-item nav-link">About</a>
+                <a href="services.html" class="nav-item nav-link">Services</a>
+                <a href="portfolio.html" class="nav-item nav-link">Portfolio</a>
+                <a href="contact.html" class="nav-item nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Header Start -->
+    <div class="container-fluid bg-primary py-5 mb-5 hero-header">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <h1 class="display-3 text-white mb-4 animated slideInDown">PhloxTools Download</h1>
+                    <p class="text-white mb-4 animated slideInDown">Thank you for your purchase! Download your installer and follow the installation guide below.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- Download Section Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-8 mx-auto">
+                    <div class="bg-light rounded p-5">
+                        <h2 class="text-primary mb-4">Download PhloxTools</h2>
+                        <div class="text-center mb-5">
+                            <a href="PhloxToolsInstaller.exe" class="btn btn-primary btn-lg px-5 py-3 rounded-pill" download>
+                                <i class="fas fa-download me-2"></i>Download PhloxToolsInstaller.exe
+                            </a>
+                        </div>
+                        
+                        <h3 class="text-primary mb-4">INSTALLATION GUIDE</h3>
+                        
+                        <div class="mb-4">
+                            <h4 class="text-secondary mb-3">1. pyRevit Installation</h4>
+                            <p>pyRevit installation guide can be found here:</p>
+                            <p><a href="https://github.com/pyrevitlabs/pyRevit/releases" target="_blank" class="text-primary">https://github.com/pyrevitlabs/pyRevit/releases</a></p>
+                            <p>Where you should select the most recent Installer file (the first one will work only for your account, the second will add it to all user systems if you're an admin).</p>
+                            <p>Then follow the remaining instructions found in the first link (installation guide). If it asks about "Bundles Creator Extension" (or something similar), include it in the install.</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-secondary mb-3">2. Setting up pyRevit and buttons</h4>
+                            <p>In the bottom left of the pyRevit tab, there's a drop-down menu simply called "pyRevit". When pressed, you'll see a ribbon with many buttons. On the bottom left of the ribbon, there's a dropdown marked "pyRevit", in which you'll see a puzzle piece marked "Extensions". Pressing that will open a window marked pyRevit Extension Manager. Make sure the highlighted Bundles Creator extension is installed and enabled, which will make the "pyRevit Bundles Creator" tab appear in the top ribbon.</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-secondary mb-3">3. Run the installer</h4>
+                            <p>Download and run PhloxToolsInstaller.exe. After restarting Revit, a new ribbon tab marked PhloxTools will appear, containing the buttons. These files will live with the other extensions in your computer here:</p>
+                            <p><code>C:\Users\yourUserName\AppData\Roaming\pyRevit-Master\extensions</code></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-secondary mb-3">4. Using the buttons</h4>
+                            <p>The tools make an important assumption that there exists a primary corridor or hallway (labeled one of "CORRIDOR", "HALLWAY", "HALL", "CORR", "MAIN HALL", "VESTIBULE"), and that it is already numbered. The first number of corridor is used to identify the floor number that guides all the other numbers (e.g. 101, 102 derived from the corridor being labeled 100.)</p>
+                            
+                            <h5 class="text-secondary mt-4 mb-2">The Segments button</h5>
+                            <p>asks you how many corridor segments there are in the hallway, and you must manually select the start and end points of the hallway. Always try to start and end in the centerline of the hallway. For T-shapes, I recommend starting at the wall-end of the leg, stopping in the middle of the segment just before the turn, then starting the new segment at one end of the T and going to the other end.</p>
+                            
+                            <h5 class="text-secondary mt-4 mb-2">The Selection button</h5>
+                            <p>lets you manually select the doors in the order desired. This is a good fallback if the segments button doesn't want to work for you. It automatically detects all of the doors directly connected between the corridor and the room doors. The program assumes that all doors you want numbered open to something with "room" in the name, as in "bedroom" and "living room".</p>
+                            <p>You should also select any stairwell doors and other misc. doors, as they are also automatically detected as connecting the main corridor to an inner room. Stairwells are detected by being labeled as "Stairwell A" or "Stairwell B", and their doors are labeled "A1" or "B2", depending on floor. Doors connecting to rooms like laundry or vending machines will be labeled based on the name given.</p>
+                            <p><strong>Note:</strong> If you've named a room "laundry room", it will be treated as a regularly numbered unit because it has "room" in the name.</p>
+                            <p>The current version numbers inner rooms/doors with increasing alphabetic letters (101A, 101B, etc.). Future versions may include flexibility for different methods (e.g. 101.1, 101.2).</p>
+                        </div>
+
+                        <div class="alert alert-info mt-5">
+                            <h5 class="alert-heading">Need Help?</h5>
+                            <p class="mb-0">If you encounter any issues during installation or use, please don't hesitate to contact us at <a href="mailto:josh@phloxengineering.com" class="alert-link">josh@phloxengineering.com</a> or schedule a consultation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Download Section End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <h4 class="text-white mb-4">Phlox Engineering</h4>
+                    <p class="mb-4">Eliminating repetitive tasks so you can focus on what you do best.</p>
+                    <div class="d-flex pt-3">
+                        <a href="https://www.linkedin.com/in/joshua-nielsen-phd-40a185113/" class="btn btn-square btn-primary me-2" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="text-white mb-4">Quick Links</h4>
+                    <a class="btn btn-link text-white-50" href="about.html">About</a>
+                    <a class="btn btn-link text-white-50" href="services.html">Services</a>
+                    <a class="btn btn-link text-white-50" href="portfolio.html">Portfolio</a>
+                    <a class="btn btn-link text-white-50" href="contact.html">Contact</a>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="text-white mb-4">Contact Info</h4>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>josh@phloxengineering.com</p>
+                    <p class="mb-0"><i class="fa fa-phone me-3"></i>+1 (502) 509-XXXX</p>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">Phlox Engineering</a>, All Right Reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+</html> 
