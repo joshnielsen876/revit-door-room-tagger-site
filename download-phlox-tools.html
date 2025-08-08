@@ -79,8 +79,35 @@
                 <div class="col-lg-8 mx-auto">
                     <div class="bg-light rounded p-5">
                         <h2 class="text-primary mb-4">Download PhloxTools</h2>
+                        <div class="alert alert-warning d-flex align-items-start" role="alert">
+                            <i class="fas fa-exclamation-triangle me-3 mt-1"></i>
+                            <div>
+                                <strong>Before you download:</strong>
+                                <ol class="mb-0 mt-2">
+                                    <li>Install pyRevit (Step 1 below)</li>
+                                    <li>Enable the Bundles Creator extension in pyRevit (Step 2 below)</li>
+                                </ol>
+                                <p class="mb-0 mt-2 small">Once Steps 1 & 2 are done, you can run the installer in Step 3.</p>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info d-flex align-items-start" role="alert">
+                            <i class="fas fa-shield-alt me-3 mt-1"></i>
+                            <div>
+                                <strong>Heads up about your browser:</strong>
+                                <p class="mb-0">Your browser may flag the download as suspicious. This is common for new products that aren’t yet widely distributed. The installer is safe to run.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="prereqConfirm">
+                            <label class="form-check-label" for="prereqConfirm">
+                                I have completed Steps 1 & 2 below (pyRevit installed and Bundles Creator enabled)
+                            </label>
+                        </div>
+
                         <div class="text-center mb-5">
-                            <a href="PhloxToolsInstaller.exe" class="btn btn-primary btn-lg px-5 py-3 rounded-pill" download>
+                            <a href="PhloxToolsInstaller.exe" id="downloadBtn" class="btn btn-primary btn-lg px-5 py-3 rounded-pill disabled" download aria-disabled="true">
                                 <i class="fas fa-download me-2"></i>Download PhloxToolsInstaller.exe
                             </a>
                         </div>
@@ -92,7 +119,7 @@
                             <p>pyRevit installation guide can be found here:</p>
                             <p><a href="https://github.com/pyrevitlabs/pyRevit/releases" target="_blank" class="text-primary">https://github.com/pyrevitlabs/pyRevit/releases</a></p>
                             <p>Where you should select the most recent Installer file (the first one will work only for your account, the second will add it to all user systems if you're an admin).</p>
-                            <p>Then follow the remaining instructions found in the first link (installation guide). If it asks about "Bundles Creator Extension" (or something similar), include it in the install.</p>
+                            <p>Then follow the remaining instructions found in the first link (installation guide). If it asks about "Bundles Creator Extension" and "developer extension", include it in the install.</p>
                         </div>
 
                         <div class="mb-4">
@@ -181,5 +208,23 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script>
+    (function() {
+        const checkbox = document.getElementById('prereqConfirm');
+        const downloadBtn = document.getElementById('downloadBtn');
+        if (!checkbox || !downloadBtn) return;
+        const toggle = () => {
+            if (checkbox.checked) {
+                downloadBtn.classList.remove('disabled');
+                downloadBtn.removeAttribute('aria-disabled');
+            } else {
+                downloadBtn.classList.add('disabled');
+                downloadBtn.setAttribute('aria-disabled', 'true');
+            }
+        };
+        checkbox.addEventListener('change', toggle);
+        toggle();
+    })();
+    </script>
 </body>
 </html> 
