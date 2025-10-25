@@ -95,7 +95,18 @@
                             <i class="fas fa-shield-alt me-3 mt-1"></i>
                             <div>
                                 <strong>Heads up about your browser:</strong>
-                                <p class="mb-0">Your browser may flag the download as suspicious. This is common for new products that aren’t yet widely distributed. The installer is safe to run.</p>
+                                <p class="mb-0">Your browser may flag the download as suspicious. This is common for new products that aren't yet widely distributed. The installer is safe to run.</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="userEmail" class="form-label">Email Address <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="userEmail" placeholder="your.email@company.com" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="companyName" class="form-label">Company Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="companyName" placeholder="Your Company Name" required>
                             </div>
                         </div>
 
@@ -305,11 +316,22 @@
         const prereqCheckbox = document.getElementById('prereqConfirm');
         const eulaCheckbox = document.getElementById('eulaAgree');
         const downloadBtn = document.getElementById('downloadBtn');
+        const emailInput = document.getElementById('userEmail');
+        const companyInput = document.getElementById('companyName');
         
-        if (!prereqCheckbox || !eulaCheckbox || !downloadBtn) return;
+        if (!prereqCheckbox || !eulaCheckbox || !downloadBtn || !emailInput || !companyInput) return;
+        
+        const validateForm = () => {
+            const emailValid = emailInput.value.trim() !== '' && emailInput.checkValidity();
+            const companyValid = companyInput.value.trim() !== '';
+            const prereqValid = prereqCheckbox.checked;
+            const eulaValid = eulaCheckbox.checked;
+            
+            return emailValid && companyValid && prereqValid && eulaValid;
+        };
         
         const toggleDownloadButton = () => {
-            if (prereqCheckbox.checked && eulaCheckbox.checked) {
+            if (validateForm()) {
                 downloadBtn.classList.remove('disabled');
                 downloadBtn.removeAttribute('aria-disabled');
             } else {
@@ -330,7 +352,9 @@
                         timestamp: new Date().toISOString(),
                         userAgent: navigator.userAgent,
                         ip: await fetch('https://api.ipify.org?format=json').then(r => r.json()).then(data => data.ip).catch(() => 'unknown'),
-                        version: '1.1.1'
+                        version: '1.1.1',
+                        email: emailInput.value.trim(),
+                        company: companyInput.value.trim()
                     })
                 });
                 
@@ -352,6 +376,8 @@
             }
             toggleDownloadButton();
         });
+        emailInput.addEventListener('input', toggleDownloadButton);
+        companyInput.addEventListener('input', toggleDownloadButton);
         
         // Initial state
         toggleDownloadButton();

@@ -36,6 +36,8 @@ exports.handler = async (event, context) => {
             userAgent: data.userAgent || 'unknown',
             ip: data.ip || 'unknown',
             version: data.version || 'unknown',
+            email: data.email || 'not provided',
+            company: data.company || 'not provided',
             // Add additional context from Netlify
             netlifyId: context.clientContext?.identity?.user?.id || 'anonymous',
             referer: event.headers.referer || 'unknown',
@@ -55,7 +57,9 @@ exports.handler = async (event, context) => {
                 },
                 body: JSON.stringify({
                     fields: {
-                        'Timestamp': new Date(logEntry.timestamp).toISOString(),
+                        'Timestamp': logEntry.timestamp.replace('Z', '.000Z'),
+                        'Email': logEntry.email,
+                        'Company': logEntry.company,
                         'IP Address': logEntry.ip,
                         'User Agent': logEntry.userAgent,
                         'Country': logEntry.country,
