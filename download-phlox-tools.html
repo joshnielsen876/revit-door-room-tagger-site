@@ -65,7 +65,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
                     <h1 class="display-3 text-white mb-4 animated slideInDown">PhloxTools Download</h1>
-                    <p class="text-white mb-4 animated slideInDown">Download your installer and follow the installation guide below.</p>
+                    <p class="text-white mb-4 animated slideInDown">Download the installer and follow the guide below.</p>
                 </div>
             </div>
         </div>
@@ -103,6 +103,13 @@
                             <input class="form-check-input" type="checkbox" value="" id="prereqConfirm">
                             <label class="form-check-label" for="prereqConfirm">
                                 I have completed Steps 1 & 2 below (pyRevit installed and Bundles Creator enabled)
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="eulaAgree">
+                            <label class="form-check-label" for="eulaAgree">
+                                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#eulaModal" class="text-primary">End User License Agreement</a>
                             </label>
                         </div>
 
@@ -162,6 +169,84 @@
     </div>
     <!-- Download Section End -->
 
+    <!-- EULA Modal Start -->
+    <div class="modal fade" id="eulaModal" tabindex="-1" aria-labelledby="eulaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eulaModalLabel">End User License Agreement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <h6 class="text-primary">PhloxTools End User License Agreement</h6>
+                        <p class="small text-muted">Version 1.1.1 - Effective Date: <span id="currentDate"></span></p>
+                    </div>
+                    
+                    <div class="eula-content" style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                        <h6>1. License Grant</h6>
+                        <p>Phlox Engineering ("Licensor") hereby grants to the purchasing company ("Licensee") a non-exclusive, non-transferable license to use PhloxTools software ("Software") for the Licensee's internal business purposes.</p>
+                        
+                        <h6>2. Permitted Use</h6>
+                        <p>The Licensee may use the Software for:</p>
+                        <ul>
+                            <li>Internal business operations and projects</li>
+                            <li>Revenue-generating activities of the Licensee's business</li>
+                            <li>Standard architectural and engineering workflows</li>
+                        </ul>
+                        
+                        <h6>3. Permitted Modifications</h6>
+                        <p>The Licensee may modify the Software for internal use only, including:</p>
+                        <ul>
+                            <li>Customizing the Software to meet specific internal business needs</li>
+                            <li>Creating internal modifications, enhancements, or adaptations</li>
+                            <li>Integrating the Software with other internal systems</li>
+                        </ul>
+                        
+                        <h6>4. Prohibited Uses</h6>
+                        <p>The Licensee may NOT:</p>
+                        <ul>
+                            <li>Resell, redistribute, or transfer the Software (original or modified) to any third party</li>
+                            <li>Distribute, sell, or commercialize any modified versions of the Software</li>
+                            <li>Create derivative works based on the Software for external distribution or commercial sale</li>
+                            <li>Use the Software to create competing products or services for external markets</li>
+                            <li>Reverse engineer the Software for the purpose of creating competing products</li>
+                        </ul>
+                        
+                        <h6>5. Intellectual Property</h6>
+                        <p>The Software and all related intellectual property rights remain the exclusive property of Phlox Engineering. This license does not grant any ownership rights to the Licensee. Any modifications made by the Licensee for internal use do not transfer ownership of the underlying Software.</p>
+                        
+                        <h6>6. Disclaimer of Warranties</h6>
+                        <p>THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.</p>
+                        
+                        <h6>7. Limitation of Liability</h6>
+                        <p>IN NO EVENT SHALL PHLOX ENGINEERING BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR RELATING TO THE USE OR INABILITY TO USE THE SOFTWARE, INCLUDING BUT NOT LIMITED TO DAMAGES FOR LOSS OF PROFITS, DATA, OR OTHER INTANGIBLE LOSSES.</p>
+                        
+                        <h6>8. Indemnification</h6>
+                        <p>The Licensee agrees to indemnify and hold harmless Phlox Engineering from any claims, damages, or expenses arising from the Licensee's use of the Software.</p>
+                        
+                        <h6>9. Termination</h6>
+                        <p>This license may be terminated immediately upon breach of any terms herein. Upon termination, the Licensee must cease all use of the Software and destroy all copies.</p>
+                        
+                        <h6>10. Governing Law</h6>
+                        <p>This agreement shall be governed by the laws of the Commonwealth of Kentucky, United States of America, without regard to conflict of law principles.</p>
+                        
+                        <h6>11. Entire Agreement</h6>
+                        <p>This agreement constitutes the entire understanding between the parties and supersedes all prior agreements relating to the Software.</p>
+                        
+                        <div class="alert alert-warning mt-3">
+                            <strong>By downloading and using PhloxTools, you acknowledge that you have read, understood, and agree to be bound by the terms of this End User License Agreement.</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- EULA Modal End -->
+
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-white py-5">
         <div class="container">
@@ -214,11 +299,17 @@
     <script src="js/main.js"></script>
     <script>
     (function() {
-        const checkbox = document.getElementById('prereqConfirm');
+        // Set current date for EULA
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+        
+        const prereqCheckbox = document.getElementById('prereqConfirm');
+        const eulaCheckbox = document.getElementById('eulaAgree');
         const downloadBtn = document.getElementById('downloadBtn');
-        if (!checkbox || !downloadBtn) return;
-        const toggle = () => {
-            if (checkbox.checked) {
+        
+        if (!prereqCheckbox || !eulaCheckbox || !downloadBtn) return;
+        
+        const toggleDownloadButton = () => {
+            if (prereqCheckbox.checked && eulaCheckbox.checked) {
                 downloadBtn.classList.remove('disabled');
                 downloadBtn.removeAttribute('aria-disabled');
             } else {
@@ -226,8 +317,44 @@
                 downloadBtn.setAttribute('aria-disabled', 'true');
             }
         };
-        checkbox.addEventListener('change', toggle);
-        toggle();
+        
+        // Handle EULA agreement logging
+        const logEulaAgreement = async () => {
+            try {
+                const response = await fetch('/.netlify/functions/log-eula-agreement', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        timestamp: new Date().toISOString(),
+                        userAgent: navigator.userAgent,
+                        ip: await fetch('https://api.ipify.org?format=json').then(r => r.json()).then(data => data.ip).catch(() => 'unknown'),
+                        version: '1.1.1'
+                    })
+                });
+                
+                if (response.ok) {
+                    console.log('EULA agreement logged successfully');
+                } else {
+                    console.warn('Failed to log EULA agreement');
+                }
+            } catch (error) {
+                console.warn('Error logging EULA agreement:', error);
+            }
+        };
+        
+        // Event listeners
+        prereqCheckbox.addEventListener('change', toggleDownloadButton);
+        eulaCheckbox.addEventListener('change', async (e) => {
+            if (e.target.checked) {
+                await logEulaAgreement();
+            }
+            toggleDownloadButton();
+        });
+        
+        // Initial state
+        toggleDownloadButton();
     })();
     </script>
 </body>
