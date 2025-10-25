@@ -30,8 +30,9 @@ exports.handler = async (event, context) => {
         const data = JSON.parse(event.body);
         
         // Extract information from the request
+        const timestamp = data.timestamp || new Date().toISOString();
         const logEntry = {
-            timestamp: data.timestamp || new Date().toISOString(),
+            timestamp: timestamp,
             userAgent: data.userAgent || 'unknown',
             ip: data.ip || 'unknown',
             version: data.version || 'unknown',
@@ -54,7 +55,7 @@ exports.handler = async (event, context) => {
                 },
                 body: JSON.stringify({
                     fields: {
-                        'Timestamp': logEntry.timestamp,
+                        'Timestamp': new Date(logEntry.timestamp).toISOString(),
                         'IP Address': logEntry.ip,
                         'User Agent': logEntry.userAgent,
                         'Country': logEntry.country,
