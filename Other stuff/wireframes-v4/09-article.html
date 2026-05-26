@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WILD — library article</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body data-page="article" data-has-tab-bar="true">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="index.html">
+        <span class="brand__mark">WILD</span>
+        <span class="brand__sub">Library</span>
+      </a>
+      <div class="app-header__right">
+        <a class="leave-link" href="index.html">Leave for now</a>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="08-library.html">Library</a>
+        <span class="crumbs__sep">›</span>
+        <span class="crumbs__current">Article</span>
+      </nav>
+
+      <div data-article-body></div>
+    </main>
+
+    <nav class="tab-bar" aria-label="Main">
+      <div class="tab-bar__inner">
+        <a href="03-map.html" data-tab="map"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Map</a>
+        <a href="08-library.html" data-tab="library" aria-current="page"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v16H4z"/><path d="M14 4h6v16h-6z"/></svg></span>Library</a>
+        <a href="10-notes.html" data-tab="notes"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5"/></svg></span>Notes</a>
+        <a href="06-summary.html" data-tab="summary"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></span>Summary</a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="data/ecosystems.js"></script>
+  <script src="data/scenarios.js"></script>
+  <script src="data/glossary.js"></script>
+  <script src="data/library.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

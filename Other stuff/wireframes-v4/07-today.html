@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WILD — today</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body data-page="today" data-has-tab-bar="true">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="index.html">
+        <span class="brand__mark">WILD</span>
+      </a>
+      <div class="app-header__right">
+        <a class="leave-link" href="index.html">Leave for now</a>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <div class="today-hero">
+        <p class="hello">Welcome back.</p>
+        <h1>One thing you could do right now.</h1>
+      </div>
+
+      <div class="today-pickup">
+        <a class="pickup" href="03-map.html" data-pickup-resume>
+          <p class="pickup__kind">Pick up where you left off</p>
+          <p class="pickup__title">Choose a story</p>
+          <p class="pickup__why">…</p>
+        </a>
+        <a class="pickup" href="03-map.html" data-pickup-explore>
+          <p class="pickup__kind">Try something new</p>
+          <p class="pickup__title">A different area</p>
+          <p class="pickup__why">…</p>
+        </a>
+      </div>
+
+      <h2 class="display" style="font-family:var(--font-serif); font-weight:500; font-size:1.5rem; margin:2rem 0 0.8rem;">Your summary so far</h2>
+      <p class="muted" style="max-width:34rem">A condensed view. Tap any line to revisit the story it came from. The full summary lives one tap away in the tab bar.</p>
+
+      <div data-summary-body></div>
+
+      <div class="export-bar">
+        <a class="button button--primary" href="06-summary.html">Open the full summary →</a>
+        <span class="spacer"></span>
+        <a class="button button--quiet" href="#" data-action="reset">Start fresh (keeps this one)</a>
+      </div>
+    </main>
+
+    <nav class="tab-bar" aria-label="Main">
+      <div class="tab-bar__inner">
+        <a href="03-map.html" data-tab="map"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Map</a>
+        <a href="08-library.html" data-tab="library"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v16H4z"/><path d="M14 4h6v16h-6z"/></svg></span>Library</a>
+        <a href="10-notes.html" data-tab="notes"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5"/></svg></span>Notes</a>
+        <a href="06-summary.html" data-tab="summary"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></span>Summary</a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="data/ecosystems.js"></script>
+  <script src="data/scenarios.js"></script>
+  <script src="data/glossary.js"></script>
+  <script src="data/library.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

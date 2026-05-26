@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WILD — the map</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body data-page="map" data-has-tab-bar="true">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="index.html">
+        <span class="brand__mark">WILD</span>
+        <span class="brand__sub">The map</span>
+      </a>
+      <div class="app-header__right">
+        <a class="leave-link" href="index.html">Leave for now</a>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <div class="map-intro">
+        <h1 class="display">Where do you want to look?</h1>
+        <p class="muted measure">The dilemmas donors face cluster into five kinds of question. Pick an area to read the stories inside it. The map stays here whenever you want to come back.</p>
+      </div>
+
+      <div class="exhibit-hall" role="list">
+
+        <!-- The "suggested" zone takes the full row on desktop. It's the
+             one place the warm colour earns its keep on this screen. -->
+        <a class="zone zone--suggested" role="listitem" data-ecosystem-id="recipient_relationship" href="04-ecosystem.html?id=recipient_relationship">
+          <div class="zone__motif" aria-hidden="true">
+            <!-- Two figures, leaning in. Recipient relationship. -->
+            <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="20" cy="18" r="5"/>
+              <circle cx="36" cy="18" r="5"/>
+              <path d="M11 44c0-7 4-12 9-12s9 5 9 12"/>
+              <path d="M27 44c0-7 4-12 9-12s9 5 9 12"/>
+              <path d="M25 23c2 2 4 2 6 0"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="zone__title">Recipient relationship</h2>
+            <p class="zone__what">Who the recipient is, the relationship itself, what they’ve said to you about the situation. The largest single driver of how donors decide.</p>
+            <p class="zone__count"><strong>16 stories</strong> · 6 sub-areas</p>
+          </div>
+        </a>
+
+        <a class="zone" role="listitem" data-ecosystem-id="conversation" href="04-ecosystem.html?id=conversation">
+          <div class="zone__motif" aria-hidden="true">
+            <!-- Speech bubbles. The conversation around you. -->
+            <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 14c0-3 2-5 5-5h22c3 0 5 2 5 5v12c0 3-2 5-5 5h-9l-7 6 1-6h-7c-3 0-5-2-5-5z"/>
+              <path d="M48 24c0-3-2-5-5-5"/>
+              <path d="M52 32c0 3-2 5-5 5h-3l-5 4 1-4h-1"/>
+              <circle cx="17" cy="20" r="1.2" fill="currentColor" stroke="none"/>
+              <circle cx="24" cy="20" r="1.2" fill="currentColor" stroke="none"/>
+              <circle cx="31" cy="20" r="1.2" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="zone__title">The conversation around you</h2>
+            <p class="zone__what">Family expectations, suspected coercion, social-media noise, the voices in the room when the topic comes up.</p>
+            <p class="zone__count"><strong>5 stories</strong> · 4 sub-areas</p>
+          </div>
+        </a>
+
+        <a class="zone" role="listitem" data-ecosystem-id="eligibility" href="04-ecosystem.html?id=eligibility">
+          <div class="zone__motif" aria-hidden="true">
+            <!-- Stethoscope-ish line. Medical eligibility. -->
+            <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 8v14c0 6 4 10 9 10s9-4 9-10V8"/>
+              <path d="M12 8h8M30 8h8"/>
+              <path d="M25 32v6a8 8 0 0 0 16 0v-4"/>
+              <circle cx="41" cy="30" r="4"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="zone__title">Medical eligibility</h2>
+            <p class="zone__what">BMI and blood-pressure cutoffs, lifestyle changes to qualify, activities that may have to change, what the workup catches.</p>
+            <p class="zone__count"><strong>2 stories</strong> · 3 sub-areas</p>
+          </div>
+        </a>
+
+        <a class="zone" role="listitem" data-ecosystem-id="logistics" href="04-ecosystem.html?id=logistics">
+          <div class="zone__motif" aria-hidden="true">
+            <!-- Calendar + clock. Logistical problems. -->
+            <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="8" y="12" width="28" height="26" rx="3"/>
+              <path d="M8 20h28"/>
+              <path d="M14 8v6M20 8v6M26 8v6M32 8v6"/>
+              <circle cx="40" cy="38" r="10"/>
+              <path d="M40 32v6l4 2"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="zone__title">Logistical problems</h2>
+            <p class="zone__what">Lost wages, gig work with no PTO, travel and lodging, recovery timelines, pace of evaluation. The practical questions that decide whether a willing donor can proceed.</p>
+            <p class="zone__count"><strong>4 stories</strong> · 3 sub-areas</p>
+          </div>
+        </a>
+
+        <a class="zone" role="listitem" data-ecosystem-id="long_term" href="04-ecosystem.html?id=long_term">
+          <div class="zone__motif" aria-hidden="true">
+            <!-- Horizon / sunrise. Life on one kidney. -->
+            <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 40h48"/>
+              <path d="M14 40a14 14 0 0 1 28 0"/>
+              <path d="M8 32l4-2M48 32l-4-2M28 12v6M18 18l2 3M38 18l-2 3"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="zone__title">Life on one kidney</h2>
+            <p class="zone__what">Long-term health effects, graft failure and donor grief, meeting the recipient years later, the limits of clinical follow-up.</p>
+            <p class="zone__count"><strong>6 stories</strong> · 3 sub-areas</p>
+          </div>
+        </a>
+
+      </div>
+
+      <div class="starter-tour">
+        <p><strong>Prefer not to choose where to start?</strong> The starter tour picks six stories that together touch every area. About ten minutes.</p>
+        <span class="spacer"></span>
+        <a class="button button--ghost" href="05-scenario.html?id=scn_melinda">Start the tour →</a>
+      </div>
+
+      <p class="disclaimer">Counts in this prototype are illustrative. The production bank is planned to hold 100–200 scenarios at launch, with new scenarios added through a clinical review pipeline.</p>
+    </main>
+
+    <nav class="tab-bar" aria-label="Main">
+      <div class="tab-bar__inner">
+        <a href="03-map.html" data-tab="map" aria-current="page">
+          <span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>
+          Map
+        </a>
+        <a href="08-library.html" data-tab="library">
+          <span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v16H4z"/><path d="M14 4h6v16h-6z"/></svg></span>
+          Library
+        </a>
+        <a href="10-notes.html" data-tab="notes">
+          <span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5"/></svg></span>
+          Notes
+        </a>
+        <a href="06-summary.html" data-tab="summary">
+          <span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></span>
+          Summary
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="data/ecosystems.js"></script>
+  <script src="data/scenarios.js"></script>
+  <script src="data/glossary.js"></script>
+  <script src="data/library.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

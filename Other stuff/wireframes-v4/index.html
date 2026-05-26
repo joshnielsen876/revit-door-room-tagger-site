@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WILD — wireframes v4</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body data-page="index">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="index.html">
+        <span class="brand__mark">WILD</span>
+        <span class="brand__sub">Wireframes v4 · 2026-05-21</span>
+      </a>
+    </header>
+
+    <main class="app-main">
+      <div class="welcome-hero">
+        <h1 class="display">A redesign that finally trusts the document.</h1>
+        <p class="lede">Wireframes v4 rebuilds the prototype against the design-principles brief in <code>Support docs/research-brief-design-principles-v4.md</code>. Same architecture as v3; new visual conviction.</p>
+      </div>
+
+      <div class="callout">
+        <p><strong>The north-star sentence.</strong> <em>“This one hits all the points. It’s a game-changing donor experience because they walk away knowing their own mind, and that makes them ready to handle whatever the messy donation process throws at them. And it’s a fun app to use, too.”</em></p>
+      </div>
+
+      <h2>The seven screens, in order</h2>
+      <div class="nav-grid">
+        <a class="nav-tile" href="01-welcome.html">
+          <p class="nav-tile__step">Step 1</p>
+          <p class="nav-tile__title">Welcome</p>
+          <p class="nav-tile__desc">Two-sentence promise. Trauma-informed safety cues sitting inside the design, not buried in a footer.</p>
+        </a>
+        <a class="nav-tile" href="02-journey.html">
+          <p class="nav-tile__step">Step 2</p>
+          <p class="nav-tile__title">The donation journey</p>
+          <p class="nav-tile__desc">Ten stages, end to end. Where on it the user is likely standing right now.</p>
+        </a>
+        <a class="nav-tile" href="03-map.html">
+          <p class="nav-tile__step">Step 3</p>
+          <p class="nav-tile__title">The map</p>
+          <p class="nav-tile__desc">Exhibit-hall treatment of the five ecosystems. One illustrated motif per zone, one warm “suggested” zone.</p>
+        </a>
+        <a class="nav-tile" href="04-ecosystem.html">
+          <p class="nav-tile__step">Step 4</p>
+          <p class="nav-tile__title">Inside an ecosystem</p>
+          <p class="nav-tile__desc">Recipient relationship. The eighteen stories typeset as a reader’s table of contents, not a CRM list.</p>
+        </a>
+        <a class="nav-tile" href="05-scenario.html">
+          <p class="nav-tile__step">Step 5</p>
+          <p class="nav-tile__title">Scenario card</p>
+          <p class="nav-tile__desc">Melinda’s story as a page from a small book. One statement at a time. Calm reveal between statements.</p>
+        </a>
+        <a class="nav-tile" href="06-summary.html">
+          <p class="nav-tile__step">Step 6</p>
+          <p class="nav-tile__title">Summary</p>
+          <p class="nav-tile__desc">The two-voice document, organised by donation-process stage. Open questions reframed as an agenda for the next conversation.</p>
+        </a>
+        <a class="nav-tile" href="07-today.html">
+          <p class="nav-tile__step">Step 7</p>
+          <p class="nav-tile__title">Today (returning)</p>
+          <p class="nav-tile__desc">What a returning user sees: their summary first, with one obvious next move on top.</p>
+        </a>
+        <a class="nav-tile" href="08-library.html">
+          <p class="nav-tile__step">Step 8</p>
+          <p class="nav-tile__title">Library</p>
+          <p class="nav-tile__desc">The articles the glossary and the mandated-reading drawer pull from. Browsable on its own.</p>
+        </a>
+        <a class="nav-tile" href="09-article.html?id=long_term_outcomes_v1">
+          <p class="nav-tile__step">Step 9</p>
+          <p class="nav-tile__title">A library article</p>
+          <p class="nav-tile__desc">Reader treatment of a single article. The drawer uses the same body.</p>
+        </a>
+        <a class="nav-tile" href="10-notes.html">
+          <p class="nav-tile__step">Step 10</p>
+          <p class="nav-tile__title">Notes</p>
+          <p class="nav-tile__desc">Everything you’ve written in your own words, in one place. Free notes and per-story notes.</p>
+        </a>
+      </div>
+
+      <h2>What changed from v3</h2>
+      <ul>
+        <li><strong>Two type families instead of a system stack.</strong> Newsreader (serif) carries the quoted voices: scenario stems, summary statements, the user’s own words. Inter (sans) carries chrome, buttons, eyebrows. The two-voice document gets half its provenance from the type contrast.</li>
+        <li><strong>Colour held to two confident moments.</strong> Slate blue for nav and primary action. Terracotta in exactly two places: the map’s “suggested” zone and the Summary’s “Take into your next conversation” section. Reserving it gives it semantic weight.</li>
+        <li><strong>Scenario card rebuilt as a reader page.</strong> Serif stem, one statement at a time, calm 200ms reveal, easy change-of-mind, a single quiet “What’s next?” footer instead of three competing action surfaces.</li>
+        <li><strong>Map rebuilt as an exhibit hall.</strong> The five zones get hand-drawn-feeling SVG motifs and confident typesetting. The suggested zone spans the full row instead of being a tile with a badge.</li>
+        <li><strong>Summary rebuilt from the session-arc spec.</strong> Two-voice provenance, organised primarily by donation-process stage, with a stance-axis toggle one tap away. Unresolved items reframed as a warm agenda for the next conversation rather than residual uncertainty.</li>
+        <li><strong>“Today” surface added for returning users.</strong> Lands them on their summary with one obvious next move at the top: pick up where they left off, or try an ecosystem they haven’t visited.</li>
+        <li><strong>Trauma-informed-design checklist adopted.</strong> No streaks, no points, no countdown timers, no surprise modals. An always-visible “Leave for now” affordance lives in the header. One toast micro-affirmation, dismissable, no sound.</li>
+      </ul>
+
+      <h2>What was kept from v3</h2>
+      <ul>
+        <li>The five-ecosystem navigation and the zoo-map metaphor.</li>
+        <li>The ten-stage donation-process orientation.</li>
+        <li>The Agree / Disagree / Not sure yet response trio, with the third given equal visual weight.</li>
+        <li>The fictional-composite disclaimer, the no-account model, the “nothing leaves your device” posture.</li>
+        <li>The information architecture broadly. v4 is a visual and interaction rebuild, not a re-architecture.</li>
+      </ul>
+
+      <h2>Decisions deferred to user testing</h2>
+      <ul>
+        <li>Self-hosted versus CDN fonts (CDN here for prototype convenience; self-host for production privacy).</li>
+        <li>Whether the warm secondary stays a single hue or splits into per-zone hues across the map.</li>
+        <li>Whether the per-card journal pill stays alongside a tab-bar Notes destination, or whether one of the two is redundant.</li>
+        <li>Whether an illustrated literal-cartography map belongs on the v5 backlog.</li>
+      </ul>
+
+      <p class="disclaimer">All scenarios are fictional composites. Library content is at <code>pending_review</code> status. Counts shown here are illustrative for the prototype; the production bank is planned to hold 100–200 scenarios at launch.</p>
+    </main>
+  </div>
+</body>
+</html>

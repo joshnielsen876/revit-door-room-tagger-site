@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WILD — welcome</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body data-page="welcome">
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="index.html">
+        <span class="brand__mark">WILD</span>
+      </a>
+      <div class="app-header__right">
+        <a class="leave-link" href="index.html">Leave for now</a>
+      </div>
+    </header>
+
+    <main class="app-main measure">
+      <div class="welcome-hero">
+        <h1>Work out what you actually think about donating a kidney.</h1>
+        <p class="lede">Before anyone asks you to commit. In your own words. On your own terms.</p>
+      </div>
+
+      <div class="welcome-promises" aria-label="What this tool does and does not do">
+        <div class="promise">
+          <span class="promise__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h16"/></svg>
+          </span>
+          <div>You read short stories about other people facing real donation dilemmas, and say what you’d do.</div>
+        </div>
+        <div class="promise">
+          <span class="promise__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h9l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M9 13h6M9 17h6"/></svg>
+          </span>
+          <div>You leave with a one-page summary you can keep, edit, or take into a first conversation with a transplant program.</div>
+        </div>
+        <div class="promise">
+          <span class="promise__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </span>
+          <div>About ten to fifteen minutes the first time. Nothing is timed; you can stop and come back.</div>
+        </div>
+        <div class="promise">
+          <span class="promise__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          </span>
+          <div>No account, no email. Nothing leaves your device unless you send it somewhere yourself.</div>
+        </div>
+      </div>
+
+      <div class="welcome-intent" data-screening-q="intent" aria-label="One quick question before you start">
+        <p class="welcome-intent__prompt">One question before you start:</p>
+        <button class="choice" type="button" data-value="specific" aria-pressed="false">I have someone specific in mind</button>
+        <button class="choice" type="button" data-value="exploring" aria-pressed="false">I'm exploring the idea in general</button>
+      </div>
+
+      <div class="welcome-cta">
+        <a class="button button--primary" href="02-journey.html" data-welcome-cta>Begin &rarr;</a>
+        <span class="meta">Or browse the <a href="index.html">screen index</a>.</span>
+      </div>
+
+      <p class="disclaimer">A thinking tool, not advice. The stories are fictional composites; the dilemmas in them are not. A transplant program runs its own full evaluation. WILD does not replace a clinician, a coordinator, or an attorney.</p>
+    </main>
+  </div>
+
+  <script src="data/ecosystems.js"></script>
+  <script src="data/scenarios.js"></script>
+  <script src="data/glossary.js"></script>
+  <script src="data/library.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
