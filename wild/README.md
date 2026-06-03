@@ -1,8 +1,6 @@
 # Wireframes v4
 
-**Live URL:** [phloxengineering.com/wild/](https://phloxengineering.com/wild/) (served from this repo’s `wild/` folder on Netlify).
-
-**Source copy:** `Other stuff/wireframes-v4/`. After editing there, sync into `wild/` before deploy.
+**Deployed at:** `wild/` in the site repo → [phloxengineering.com/wild/](https://phloxengineering.com/wild/). Copy changes into `wild/` before pushing.
 
 **Date:** 2026-05-21. **Supersedes:** `wireframes-v3/`.
 **Warrant:** `Support docs/research-brief-design-principles-v4.md`.
