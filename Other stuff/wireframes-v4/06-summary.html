@@ -20,31 +20,19 @@
 
     <main class="app-main">
       <div class="summary-head">
-        <h1>What you've worked out so far.</h1>
-        <p class="byline">In two voices: the statements you endorsed, and what you wrote in your own words. Organised by stage of the donation process so you can use it the way a transplant coordinator would.</p>
+        <h1>This summary is the donation policy you created.</h1>
+        <p class="lede">Below are the statements you agreed with, the ones you disagreed with, and the ones you are still working out. It is yours to keep, edit, print, or bring to a conversation with a transplant program or others you trust. You can come back and add to it any time.</p>
       </div>
 
       <div data-summary-body></div>
 
-      <div class="axis-toggle" role="group" aria-label="Organise summary by" data-component="axis-toggle">
-        <span class="axis-toggle__label">See it a different way:</span>
-        <button type="button" data-axis="stage"  aria-pressed="true">By stage</button>
-        <button type="button" data-axis="stance" aria-pressed="false">By stance</button>
+      <div class="summary-export">
+        <a class="button button--ghost" href="#" data-export="pdf">Download as PDF</a>
+        <a class="button button--ghost" href="#" data-export="text">Copy as plain text</a>
+        <span class="spacer"></span>
+        <a class="button button--quiet" href="#" data-export="json">Save session</a>
+        <a class="button button--quiet" href="#" data-export="import">Load session</a>
       </div>
-
-      <div class="card card--takeaway" style="margin-top:1.6rem">
-        <p class="card__eyebrow">This summary belongs to you</p>
-        <p>These are the conclusions you've reached, in words you can read back, revise, and use. Take it into a first conversation with a transplant program, share it with someone you trust, or keep it for yourself.</p>
-        <div class="export-bar">
-          <a class="button button--ghost" href="#" data-export="pdf">Download as PDF</a>
-          <a class="button button--ghost" href="#" data-export="text">Copy as plain text</a>
-          <a class="button button--ghost" href="#" data-export="json">Export session (JSON)</a>
-          <span class="spacer"></span>
-          <a class="button button--quiet" href="#" data-export="import">Import session…</a>
-        </div>
-      </div>
-
-      <p class="disclaimer">WILD prototype. Not medical or legal advice. Library content is pending review.</p>
     </main>
 
     <nav class="tab-bar" aria-label="Main">

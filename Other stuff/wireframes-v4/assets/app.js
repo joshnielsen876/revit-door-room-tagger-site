@@ -590,10 +590,12 @@
   function renderEcosystem() {
     var eid = document.body.getAttribute('data-ecosystem-id');
     var eco = ecosystem(eid); if (!eco) return;
-    var titleEl = document.querySelector('[data-eco-title]');
-    var whatEl  = document.querySelector('[data-eco-what]');
-    if (titleEl) titleEl.textContent = eco.title + '.';
-    if (whatEl)  whatEl.textContent  = eco.what;
+    document.querySelectorAll('[data-eco-title]').forEach(function (el) {
+      el.textContent = eco.title;
+    });
+    document.querySelectorAll('[data-eco-what]').forEach(function (el) {
+      el.textContent = eco.what;
+    });
 
     // Sub-area chips
     var chips = document.querySelector('[data-subarea-chips]');
@@ -630,13 +632,11 @@
         +   '<a class="story-row" href="05-scenario.html?id=' + encodeURIComponent(s.id) + '">'
         +     '<div>'
         +       '<p class="story-row__title">' + escapeHtml(s.title) + '</p>'
-        +       '<p class="story-row__teaser">' + escapeHtml(s.teaser) + '</p>'
         +       '<ul class="story-row__tags">'
         +         (s.sub_areas || []).map(function (sa) {
                     var subLabel = (eco.sub_areas.find(function (x) { return x.id === sa; }) || {}).label || sa;
                     return '<li>' + escapeHtml(subLabel) + '</li>';
                   }).join('')
-        +         '<li>Stage ' + s.stage + '</li>'
         +       '</ul>'
         +     '</div>'
         +     '<div class="story-row__state' + (seen ? ' story-row__state--seen' : '') + '">' + (seen ? '✓ Read' : stCount) + '</div>'
@@ -735,6 +735,16 @@
       +     '<a class="whats-next__option" href="06-summary.html">'
       +       '<strong>See your summary</strong><span class="hint">Your words so far.</span>'
       +     '</a>'
+      +     (function () {
+          var hasUnread = unreadScenarios(scn.id).length > 0;
+          return ''
+            + '<button class="whats-next__option" type="button" data-pick-next-scenario'
+            +   (hasUnread ? '' : ' disabled aria-disabled="true"')
+            + '>'
+            +   '<strong>Choose the next scenario for me</strong>'
+            +   '<span class="hint">' + (hasUnread ? 'A random story you haven\u2019t read yet.' : 'You\u2019ve read every story.') + '</span>'
+            + '</button>';
+        })()
       +   '</div>'
       + '</div>'
       + '<button class="note-pill" type="button" data-journal-open>'
@@ -771,6 +781,15 @@
 
   function onScenarioClick(e) {
     var card = e.currentTarget;
+
+    var pickNextBtn = e.target.closest('[data-pick-next-scenario]');
+    if (pickNextBtn) {
+      if (pickNextBtn.disabled) return;
+      var currentId = qsParam('id') || document.body.getAttribute('data-scenario-id');
+      var next = pickRandomUnreadScenario(currentId);
+      if (next) location.href = '05-scenario.html?id=' + encodeURIComponent(next.id);
+      return;
+    }
 
     var noteBtn = e.target.closest('[data-journal-open]');
     if (noteBtn) {
@@ -857,6 +876,18 @@
     return '05-scenario.html?id=' + encodeURIComponent(next.id);
   }
 
+  function unreadScenarios(excludeId) {
+    return window.LL_SCENARIOS.filter(function (s) {
+      return s.id !== excludeId && !state.visited_scenarios[s.id];
+    });
+  }
+
+  function pickRandomUnreadScenario(excludeId) {
+    var unread = unreadScenarios(excludeId);
+    if (!unread.length) return null;
+    return unread[Math.floor(Math.random() * unread.length)];
+  }
+
   // -- Summary ------------------------------------------------------------
 
   function renderSummary() {
@@ -913,70 +944,63 @@
     var hasAny = Object.keys(state.responses).length > 0 || state.journal.length > 0;
     if (!hasAny) {
       holder.innerHTML = ''
-        + '<div class="card card--quiet" style="margin-top:1rem">'
-        +   '<p class="card__eyebrow">No responses yet</p>'
+        + '<div class="summary-empty">'
         +   '<p>Your summary fills in as you read stories and respond to statements. <a href="03-map.html">Start on the map</a>.</p>'
         + '</div>';
       return;
     }
 
-    var html = '';
-    if (state.summary_axis === 'stage') {
-      summaryByStage().forEach(function (group) {
-        var entries = group.entries;
-        html += '<section class="summary-stage">'
-          + '<div class="summary-stage__head">'
-          +   '<h2 class="summary-stage__title"><span class="num">' + (group.stage ? padNum(group.stage.num) : '··') + '</span>' + escapeHtml(group.stage ? group.stage.title : 'Other') + '</h2>'
-          +   '<span class="summary-stage__count">' + entries.length + ' line' + (entries.length === 1 ? '' : 's') + '</span>'
-          + '</div>'
-          + entries.map(function (e) { return e.journal ? userVoiceHtml(e.journal, e.scenario) : voiceHtml(e); }).join('')
-          + '</section>';
-      });
-    } else {
-      summaryByStance().forEach(function (group) {
-        html += '<section class="summary-stage">'
-          + '<div class="summary-stage__head">'
-          +   '<h2 class="summary-stage__title">' + escapeHtml(group.title) + '</h2>'
-          +   '<span class="summary-stage__count">' + group.entries.length + ' line' + (group.entries.length === 1 ? '' : 's') + '</span>'
-          + '</div>'
-          + group.entries.map(voiceHtml).join('')
-          + '</section>';
-      });
+    var buckets = { agree: [], disagree: [], unsure: [] };
+    answeredStatements().forEach(function (entry) {
+      var v = entry.response.value;
+      if (buckets[v]) buckets[v].push(entry);
+    });
 
-      // Journal notes in stance view, as a single section at the foot
-      var notes = state.journal.slice();
-      if (notes.length) {
-        html += '<section class="summary-stage">'
-          + '<div class="summary-stage__head">'
-          +   '<h2 class="summary-stage__title">Your notes</h2>'
-          +   '<span class="summary-stage__count">' + notes.length + ' note' + (notes.length === 1 ? '' : 's') + '</span>'
-          + '</div>'
-          + notes.map(function (n) {
-              var scn = n.scenario_id ? scenario(n.scenario_id) : null;
-              return userVoiceHtml(n, scn);
-            }).join('')
-          + '</section>';
-      }
-    }
+    var groups = [
+      { key: 'agree',    title: 'Statements you agreed with',           entries: buckets.agree },
+      { key: 'disagree', title: 'Statements you disagreed with',        entries: buckets.disagree },
+      { key: 'unsure',   title: 'Statements you are still working out', entries: buckets.unsure },
+    ];
 
-    // Open questions — always rendered, in the warm agenda block
-    var open = openQuestions();
-    if (open.length) {
+    var html = groups.filter(function (g) { return g.entries.length > 0; })
+      .map(function (g) {
+        return ''
+          + '<section class="summary-group summary-group--' + g.key + '">'
+          +   '<h2 class="summary-group__title">' + escapeHtml(g.title) + '</h2>'
+          +   '<ul class="summary-group__list">'
+          +     g.entries.map(summaryLineHtml).join('')
+          +   '</ul>'
+          + '</section>';
+      }).join('');
+
+    if (state.journal.length) {
       html += ''
-        + '<section class="summary-agenda" aria-label="Open questions">'
-        +   '<h2 class="summary-agenda__title">Take into your next conversation</h2>'
-        +   '<p class="summary-agenda__lede">Things you’ve thought about and haven’t yet settled. Worth raising with a partner, a coordinator, or yourself.</p>'
-        +   '<ul class="summary-agenda__list">'
-        +     open.map(function (e) {
-                return '<li class="summary-agenda__item">'
-                  + escapeHtml(asAgendaQuestion(e.statement.text))
-                  + ' <span class="muted">— surfaced by ' + escapeHtml(e.scenario.protagonist) + '</span></li>';
+        + '<section class="summary-group summary-group--notes">'
+        +   '<h2 class="summary-group__title">Your notes</h2>'
+        +   '<ul class="summary-group__list">'
+        +     state.journal.map(function (n) {
+                var scn = n.scenario_id ? scenario(n.scenario_id) : null;
+                return ''
+                  + '<li class="summary-line summary-line--note">'
+                  +   '<p class="summary-line__text">' + escapeHtml(n.text) + '</p>'
+                  +   (scn
+                        ? '<a class="summary-line__source" href="05-scenario.html?id=' + encodeURIComponent(scn.id) + '">' + escapeHtml(scn.protagonist) + '</a>'
+                        : '')
+                  + '</li>';
               }).join('')
         +   '</ul>'
         + '</section>';
     }
 
     holder.innerHTML = html;
+  }
+
+  function summaryLineHtml(entry) {
+    return ''
+      + '<li class="summary-line">'
+      +   '<p class="summary-line__text">' + escapeHtml(entry.statement.text) + '</p>'
+      +   '<a class="summary-line__source" href="05-scenario.html?id=' + encodeURIComponent(entry.scenario.id) + '">' + escapeHtml(entry.scenario.protagonist) + '</a>'
+      + '</li>';
   }
 
   function voiceHtml(entry) {
@@ -1202,24 +1226,38 @@
 
   function exportPlainText() {
     var lines = [];
-    lines.push('WILD — MY SUMMARY');
-    lines.push('Last edited: ' + (state.last_active_at || ''));
+    lines.push('WILD: my donation policy');
+    if (state.last_active_at) lines.push('Last edited: ' + state.last_active_at);
     lines.push('');
-    summaryByStage().forEach(function (g) {
-      lines.push('STAGE ' + (g.stage ? padNum(g.stage.num) + ' — ' + g.stage.title.toUpperCase() : 'OTHER'));
-      g.entries.forEach(function (e) {
-        if (e.journal) lines.push('  - (note) ' + e.journal.text);
-        else lines.push('  - ' + restateAsPolicy(e.statement, e.response.value) + '   [from ' + e.scenario.protagonist + ']');
+
+    var buckets = { agree: [], disagree: [], unsure: [] };
+    answeredStatements().forEach(function (entry) {
+      var v = entry.response.value;
+      if (buckets[v]) buckets[v].push(entry);
+    });
+
+    function block(title, entries) {
+      if (!entries.length) return;
+      lines.push(title);
+      entries.forEach(function (e) {
+        lines.push('  - ' + e.statement.text + '  (' + e.scenario.protagonist + ')');
       });
       lines.push('');
-    });
-    var open = openQuestions();
-    if (open.length) {
-      lines.push('TAKE INTO YOUR NEXT CONVERSATION');
-      open.forEach(function (e) { lines.push('  ? ' + asAgendaQuestion(e.statement.text) + '   [surfaced by ' + e.scenario.protagonist + ']'); });
+    }
+
+    block('Statements you agreed with', buckets.agree);
+    block('Statements you disagreed with', buckets.disagree);
+    block('Statements you are still working out', buckets.unsure);
+
+    if (state.journal.length) {
+      lines.push('Your notes');
+      state.journal.forEach(function (n) {
+        var scn = n.scenario_id ? scenario(n.scenario_id) : null;
+        lines.push('  - ' + n.text + (scn ? '  (' + scn.protagonist + ')' : ''));
+      });
       lines.push('');
     }
-    lines.push('— WILD prototype (wireframes v4). Not medical or legal advice.');
+
     downloadText(lines.join('\n'), 'wild-summary.txt', 'text/plain');
   }
 
