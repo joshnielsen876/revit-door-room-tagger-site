@@ -6,6 +6,23 @@
 window.LL_LIBRARY = [
 
   {
+    id: 'mand_read_US_voluntary_not_sale_drawer_v1',
+    title: 'Paying for a kidney in the U.S.',
+    summary: 'You cannot buy or sell a kidney in the United States. Donors may be reimbursed for real costs, but not paid for the organ.',
+    topics: ['payment_and_law'],
+    eligible_as_mandated_read: true,
+    review_status: 'pending_legal_review',
+    library_article_id: 'mand_read_US_voluntary_not_sale_v1',
+    related_article_ids: ['mand_read_US_voluntary_not_sale_v1'],
+    body: [
+      { paragraphs: [
+        'You cannot buy or sell a kidney in the United States. Federal law treats living donation as a voluntary gift, not a paid transaction.',
+        'Donors may be reimbursed for real costs such as travel or lost wages. This can help cover expenses from donating, but it is not payment for the organ itself.',
+      ]},
+    ],
+  },
+
+  {
     id: 'mand_read_US_voluntary_not_sale_v1',
     title: 'Donating a kidney in the U.S.: a gift, not a sale',
     summary: 'Why U.S. law treats living kidney donation as a voluntary gift and not a transaction, and how legitimate reimbursement programs differ from payment.',

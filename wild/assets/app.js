@@ -37,6 +37,7 @@
     visited_scenarios: {}, // { scn_x: true }
     visited_articles: {},  // { article_id: true }
     seen_glossary_terms: {}, // first-encounter tracking
+    research_contribution: null, // { submitted_at, payload_version } after one-shot opt-in
   };
 
   function loadState() {
@@ -64,6 +65,29 @@
     }
     state = Object.assign({}, DEFAULT_STATE, { started_at: new Date().toISOString() });
     saveState();
+  }
+
+  function hasSession() {
+    return Object.keys(state.responses).length > 0
+      || state.journal.length > 0
+      || Object.keys(state.visited_scenarios).length > 0
+      || Object.keys(state.screening).length > 0;
+  }
+
+  function wireResetControls() {
+    document.querySelectorAll('[data-action="reset"]').forEach(function (btn) {
+      if (btn.getAttribute('data-reset-wired') === 'true') return;
+      btn.setAttribute('data-reset-wired', 'true');
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var msg = btn.getAttribute('data-reset-confirm')
+          || 'Start fresh? Your current summary will be kept on the device as a backup.';
+        if (!confirm(msg)) return;
+        var keepBackup = btn.getAttribute('data-reset-backup') !== 'false';
+        resetState(keepBackup);
+        location.href = btn.getAttribute('data-reset-redirect') || '01-welcome.html';
+      });
+    });
   }
 
   var state = loadState();
@@ -219,19 +243,36 @@
 
   // -------------------------------------------------------- Glossary helpers
 
-  // Linkify a stem string: wrap aliases of glossary terms in <button> footnotes.
-  // Only the first occurrence of each term gets a footnote, to keep the prose calm.
-  function linkifyStem(stem, termIds) {
-    if (!termIds || !termIds.length) return escapeHtml(stem).replace(/\n/g, '<br><br>');
+  function escapeRegExp(s) {
+    return String(s || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  // Linkify a stem string: optional inline library links (open the article drawer),
+  // then glossary footnotes (popover). Only the first occurrence of each link.
+  function linkifyStem(stem, termIds, libraryLinks) {
     var html = escapeHtml(stem);
-    termIds.forEach(function (tid) {
+
+    (libraryLinks || []).slice().sort(function (a, b) {
+      return (b.match || '').length - (a.match || '').length;
+    }).forEach(function (link) {
+      if (!link.match || !link.article_id) return;
+      var art = article(link.article_id); if (!art) return;
+      var re = new RegExp('(' + escapeRegExp(link.match) + ')', 'i');
+      if (!re.test(html)) return;
+      var btn = ''
+        + '<button type="button" class="library-link" data-article="' + escapeAttr(link.article_id) + '"'
+        + ' aria-label="Read in the library: ' + escapeAttr(art.title) + '">'
+        + '$1</button>';
+      html = html.replace(re, btn);
+    });
+
+    (termIds || []).forEach(function (tid) {
       var t = glossaryTerm(tid); if (!t) return;
-      // Try each alias longest-first, case-insensitive, first-occurrence only.
       var aliases = (t.aliases || [t.term]).slice().sort(function (a, b) { return b.length - a.length; });
       var matched = false;
       aliases.forEach(function (alias) {
         if (matched) return;
-        var re = new RegExp('\\b(' + alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')\\b', 'i');
+        var re = new RegExp('\\b(' + escapeRegExp(alias) + ')\\b', 'i');
         var m = html.match(re);
         if (!m) return;
         var btn = '<button type="button" class="footnote" data-glossary="' + t.id + '" aria-label="Show definition of ' + escapeAttr(t.term) + '">' + m[1] + '</button>';
@@ -239,6 +280,7 @@
         matched = true;
       });
     });
+
     return html.replace(/\n/g, '<br><br>');
   }
 
@@ -361,41 +403,84 @@
       +   '<button type="button" class="button button--primary drawer__done">Got it — back to the story</button>'
       + '</footer>';
     document.body.appendChild(drawer);
-    drawer.querySelector('.drawer__close').addEventListener('click', closeDrawer);
-    drawer.querySelector('.drawer__done').addEventListener('click', closeDrawer);
+    drawer.querySelectorAll('.drawer__close').forEach(function (b) {
+      b.addEventListener('click', closeDrawer);
+    });
+    drawer.querySelector('.drawer__done').addEventListener('click', acknowledgeAndCloseDrawer);
     window.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
   }
   var drawerCloseCallback = null;
   function openArticleDrawer(articleId, opts) {
     ensureDrawer();
     var a = article(articleId); if (!a) return;
-    state.visited_articles[a.id] = true; saveState();
+    var mandatedGate = !!(opts && opts.mandatedGate);
     drawerCloseCallback = (opts && typeof opts.onClose === 'function') ? opts.onClose : null;
     var d = document.getElementById('drawer');
+    if (mandatedGate) {
+      d.setAttribute('data-mandated-pending', a.id);
+    } else {
+      d.removeAttribute('data-mandated-pending');
+      state.visited_articles[a.id] = true;
+      saveState();
+    }
     d.querySelector('.drawer__title').textContent = a.title;
     var body = d.querySelector('.drawer__body');
-    body.innerHTML = articleBodyHtml(a);
+    body.innerHTML = articleBodyHtml(a, { compact: mandatedGate });
     document.getElementById('drawer-overlay').setAttribute('data-open', 'true');
     d.setAttribute('data-open', 'true');
     setTimeout(function () { body.focus(); }, 60);
   }
+  function acknowledgeMandatedDrawer() {
+    var d = document.getElementById('drawer');
+    if (!d) return false;
+    var aid = d.getAttribute('data-mandated-pending');
+    if (!aid) return false;
+    state.visited_articles[aid] = true;
+    saveState();
+    d.removeAttribute('data-mandated-pending');
+    return true;
+  }
+  function acknowledgeAndCloseDrawer() {
+    acknowledgeMandatedDrawer();
+    closeDrawer();
+  }
   function closeDrawer() {
     var d = document.getElementById('drawer');
     var o = document.getElementById('drawer-overlay');
-    if (d) d.setAttribute('data-open', 'false');
+    if (d) {
+      d.setAttribute('data-open', 'false');
+      d.removeAttribute('data-mandated-pending');
+    }
     if (o) o.setAttribute('data-open', 'false');
     var cb = drawerCloseCallback; drawerCloseCallback = null;
     if (cb) cb();
   }
-  function articleBodyHtml(a) {
+  function articleBodyHtml(a, opts) {
+    opts = opts || {};
     var html = '';
-    if (a.summary) html += '<p class="article__summary">' + escapeHtml(a.summary) + '</p>';
+    if (!opts.compact && a.summary) html += '<p class="article__summary">' + escapeHtml(a.summary) + '</p>';
     a.body.forEach(function (section) {
       if (section.heading) html += '<h3>' + escapeHtml(section.heading) + '</h3>';
       section.paragraphs.forEach(function (p) { html += '<p>' + escapeHtml(p) + '</p>'; });
     });
-    html += '<p class="article__status">Status: ' + escapeHtml(a.review_status || 'pending review') + '. Not authoritative outside the prototype.</p>';
+    if (opts.compact && a.library_article_id) {
+      html += '<p class="drawer__more"><a href="09-article.html?id=' + encodeURIComponent(a.library_article_id) + '">Read the full article in the library</a></p>';
+    }
+    if (!opts.compact) {
+      html += '<p class="article__status">Status: ' + escapeHtml(a.review_status || 'pending review') + '. Not authoritative outside the prototype.</p>';
+    }
     return html;
+  }
+
+  function stemOpensMandatedRead(scn, mandated) {
+    if (!mandated || !scn.stem_library_links || !scn.stem_library_links.length) return false;
+    return scn.stem_library_links.some(function (l) { return l.article_id === mandated.id; });
+  }
+
+  function scenarioMandatedAcknowledged(scnId) {
+    var scn = scenario(scnId);
+    if (!scn || !scn.mandated_read_article_id) return true;
+    return !!state.visited_articles[scn.mandated_read_article_id];
   }
 
   // -------------------------------------------------------- Journal sheet
@@ -493,13 +578,58 @@
 
   // -- Welcome ------------------------------------------------------------
 
+  function wireSingleOpenAccordion(root) {
+    if (!root || root.getAttribute('data-accordion-wired') === 'true') return;
+    root.setAttribute('data-accordion-wired', 'true');
+    var panels = Array.prototype.slice.call(root.querySelectorAll('[data-accordion-panel]'));
+
+    function setPanelOpen(panel, open) {
+      var trigger = panel.querySelector('.welcome-panel__trigger');
+      var content = panel.querySelector('.welcome-panel__content');
+      panel.setAttribute('data-open', open ? 'true' : 'false');
+      if (trigger) trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (content) content.hidden = !open;
+    }
+
+    panels.forEach(function (panel) {
+      var trigger = panel.querySelector('.welcome-panel__trigger');
+      if (!trigger) return;
+      trigger.addEventListener('click', function () {
+        var wasOpen = panel.getAttribute('data-open') === 'true';
+        panels.forEach(function (p) { setPanelOpen(p, false); });
+        if (!wasOpen) {
+          setPanelOpen(panel, true);
+          var content = panel.querySelector('.welcome-panel__content');
+          if (content && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }
+      });
+    });
+  }
+
+  function wireSingleOpenAccordions() {
+    document.querySelectorAll('[data-single-accordion]').forEach(wireSingleOpenAccordion);
+  }
+
   function renderWelcome() {
+    wireSingleOpenAccordions();
+
     var cta = document.querySelector('[data-welcome-cta]');
     if (!cta) return;
-    var hasState = Object.keys(state.responses).length > 0 || state.journal.length > 0;
-    if (hasState) {
+    if (hasSession()) {
       cta.textContent = 'Pick up where you left off \u2192';
       cta.setAttribute('href', '07-today.html');
+      var ctaArea = document.querySelector('.welcome-cta');
+      if (ctaArea && !ctaArea.querySelector('[data-action="reset"]')) {
+        var resetLink = document.createElement('a');
+        resetLink.className = 'button button--quiet';
+        resetLink.href = '#';
+        resetLink.setAttribute('data-action', 'reset');
+        resetLink.textContent = 'Start fresh instead';
+        ctaArea.appendChild(resetLink);
+        wireResetControls();
+      }
     }
 
     var intentGroup = document.querySelector('[data-screening-q="intent"]');
@@ -583,6 +713,27 @@
         zone.classList.remove('zone--suggested');
       }
     });
+
+    var randomBtn = document.querySelector('[data-action="random-scenario"]');
+    if (randomBtn && randomBtn.getAttribute('data-wired') !== 'true') {
+      randomBtn.setAttribute('data-wired', 'true');
+      randomBtn.addEventListener('click', function () {
+        var next = pickRandomUnreadScenario(null);
+        if (next) location.href = '05-scenario.html?id=' + encodeURIComponent(next.id);
+      });
+    }
+    if (randomBtn) {
+      var unread = unreadScenarios(null);
+      if (unread.length === 0) {
+        randomBtn.disabled = true;
+        randomBtn.setAttribute('aria-disabled', 'true');
+        randomBtn.textContent = 'You\u2019ve read every story';
+      } else {
+        randomBtn.disabled = false;
+        randomBtn.removeAttribute('aria-disabled');
+        randomBtn.textContent = 'Pick a random story \u2192';
+      }
+    }
   }
 
   // -- Ecosystem detail ---------------------------------------------------
@@ -685,8 +836,13 @@
       : '';
     var stage = stageByNum(scn.stage);
     var mandated = scn.mandated_read_article_id ? article(scn.mandated_read_article_id) : null;
-
-    var mandatedAcknowledged = !mandated || !!state.visited_articles[mandated.id];
+    var mandatedAcknowledged = scenarioMandatedAcknowledged(scn.id);
+    var stemLinkOpensMandated = stemOpensMandatedRead(scn, mandated);
+    var showMandatedCallout = mandated && !stemLinkOpensMandated;
+    var gated = mandated && !mandatedAcknowledged;
+    var gateMsg = stemLinkOpensMandated
+      ? 'Tap the highlighted phrase in the story, read the short note, then tap Got it \u2014 back to the story before you respond.'
+      : 'Open the article above before you respond to the statements.';
 
     card.innerHTML = ''
       + '<p class="scenario__eyebrow">'
@@ -695,31 +851,32 @@
       +   (subAreaLabel ? '<span class="sep">·</span><span>' + escapeHtml(subAreaLabel) + '</span>' : '')
       + '</p>'
       + '<h1 class="scenario__protagonist">' + escapeHtml(scn.protagonist) + '</h1>'
-      + '<p class="scenario__stem">' + linkifyStem(scn.stem, scn.glossary_term_ids) + '</p>'
-      + (mandated
+      + '<p class="scenario__stem">' + linkifyStem(scn.stem, scn.glossary_term_ids, scn.stem_library_links) + '</p>'
+      + (showMandatedCallout
           ? '<button type="button" class="mandated-call' + (mandatedAcknowledged ? ' mandated-call--done' : ' mandated-call--required') + '" data-article="' + escapeAttr(mandated.id) + '">'
           +   '<span class="mandated-call__eyebrow">' + (mandatedAcknowledged ? '\u2713 You\u2019ve read this' : 'Read before you respond') + '</span>'
           +   '<span class="mandated-call__title">' + escapeHtml(mandated.title) + ' \u2192</span>'
           + '</button>'
           : '')
-      + (mandated && !mandatedAcknowledged
-          ? '<div class="mandated-gate" role="status">Open the article above before you respond to the statements.</div>'
+      + (gated
+          ? '<div class="mandated-gate" role="status">' + escapeHtml(gateMsg) + '</div>'
           : '')
-      + '<p class="scenario__prompt"' + (mandated && !mandatedAcknowledged ? ' hidden' : '') + '>'
+      + '<p class="scenario__prompt"' + (gated ? ' hidden' : '') + '>'
       +   '<span>Where do you stand?</span>'
       +   '<span class="pip" aria-hidden="true">'
       +     scn.statements.map(function () { return '<span></span>'; }).join('')
       +   '</span>'
       + '</p>'
       + scn.statements.map(function (st, i) {
-          var hidden = (mandated && !mandatedAcknowledged) || i !== 0;
+          var hidden = gated ? true : (i !== 0);
+          var locked = gated ? ' choices--locked' : '';
           return ''
             + '<div class="statement" data-statement-id="' + escapeAttr(st.id) + '"' + (hidden ? ' hidden' : '') + '>'
             +   '<p class="statement__text">' + escapeHtml(st.text) + '</p>'
-            +   '<div class="choices" role="radiogroup" aria-label="Response to statement ' + (i + 1) + '">'
-            +     '<button class="choice" type="button" data-value="agree" aria-pressed="false">Agree</button>'
-            +     '<button class="choice" type="button" data-value="disagree" aria-pressed="false">Disagree</button>'
-            +     '<button class="choice" type="button" data-value="unsure" aria-pressed="false">Not sure yet</button>'
+            +   '<div class="choices' + locked + '" role="radiogroup" aria-label="Response to statement ' + (i + 1) + '"' + (gated ? ' aria-disabled="true"' : '') + '>'
+            +     '<button class="choice" type="button" data-value="agree" aria-pressed="false"' + (gated ? ' disabled' : '') + '>Agree</button>'
+            +     '<button class="choice" type="button" data-value="disagree" aria-pressed="false"' + (gated ? ' disabled' : '') + '>Disagree</button>'
+            +     '<button class="choice" type="button" data-value="unsure" aria-pressed="false"' + (gated ? ' disabled' : '') + '>Not sure yet</button>'
             +   '</div>'
             + '</div>';
         }).join('')
@@ -735,44 +892,45 @@
       +     '<a class="whats-next__option" href="06-summary.html">'
       +       '<strong>See your summary</strong><span class="hint">Your words so far.</span>'
       +     '</a>'
+      +   '</div>'
       +     (function () {
           var hasUnread = unreadScenarios(scn.id).length > 0;
           return ''
-            + '<button class="whats-next__option" type="button" data-pick-next-scenario'
+            + '<button class="whats-next__option whats-next__pick" type="button" data-pick-next-scenario'
             +   (hasUnread ? '' : ' disabled aria-disabled="true"')
             + '>'
             +   '<strong>Choose the next scenario for me</strong>'
             +   '<span class="hint">' + (hasUnread ? 'A random story you haven\u2019t read yet.' : 'You\u2019ve read every story.') + '</span>'
             + '</button>';
         })()
-      +   '</div>'
       + '</div>'
       + '<button class="note-pill" type="button" data-journal-open>'
       +   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5"/></svg>'
       +   'Add a note about ' + escapeHtml(scn.protagonist)
       + '</button>';
 
-    // Restore prior responses
+    // Restore prior responses (only after mandated read is acknowledged)
     var existing = responsesForScenario(scn);
     var statementsEls = card.querySelectorAll('.statement');
     var lastAnsweredIdx = -1;
-    statementsEls.forEach(function (el, i) {
-      var sid = el.getAttribute('data-statement-id');
-      var r = existing[sid];
-      if (r) {
-        el.classList.add('is-answered');
-        var btn = el.querySelector('.choice[data-value="' + r.value + '"]');
-        if (btn) btn.setAttribute('aria-pressed', 'true');
-        el.hidden = false;
-        lastAnsweredIdx = i;
+    if (mandatedAcknowledged) {
+      statementsEls.forEach(function (el, i) {
+        var stmtKey = el.getAttribute('data-statement-id');
+        var r = existing[stmtKey];
+        if (r) {
+          el.classList.add('is-answered');
+          var btn = el.querySelector('.choice[data-value="' + r.value + '"]');
+          if (btn) btn.setAttribute('aria-pressed', 'true');
+          el.hidden = false;
+          lastAnsweredIdx = i;
+        }
+      });
+      var nextIdx = lastAnsweredIdx + 1;
+      if (nextIdx < statementsEls.length) statementsEls[nextIdx].hidden = false;
+      paintPip(card, lastAnsweredIdx + 1);
+      if (lastAnsweredIdx === statementsEls.length - 1) {
+        var wn = card.querySelector('.whats-next'); if (wn) wn.hidden = false;
       }
-    });
-    // Reveal next statement after last answered (or first if none)
-    var nextIdx = lastAnsweredIdx + 1;
-    if (nextIdx < statementsEls.length) statementsEls[nextIdx].hidden = false;
-    paintPip(card, lastAnsweredIdx + 1);
-    if (lastAnsweredIdx === statementsEls.length - 1) {
-      var wn = card.querySelector('.whats-next'); if (wn) wn.hidden = false;
     }
 
     // Wire interactions
@@ -798,11 +956,25 @@
       return;
     }
 
+    var libLink = e.target.closest('.library-link');
+    if (libLink) {
+      var artId = libLink.getAttribute('data-article');
+      var currentId = qsParam('id') || document.body.getAttribute('data-scenario-id');
+      var currentScn = scenario(currentId);
+      var isMandated = currentScn && currentScn.mandated_read_article_id === artId;
+      openArticleDrawer(artId, {
+        mandatedGate: isMandated,
+        onClose: isMandated ? function () { renderScenario(); } : null,
+      });
+      return;
+    }
+
     var mandated = e.target.closest('.mandated-call');
     if (mandated) {
-      openArticleDrawer(mandated.getAttribute('data-article'), { onClose: function () {
-        renderScenario();
-      } });
+      openArticleDrawer(mandated.getAttribute('data-article'), {
+        mandatedGate: true,
+        onClose: function () { renderScenario(); },
+      });
       return;
     }
 
@@ -816,10 +988,15 @@
 
     var btn = e.target.closest('.choice');
     if (!btn) return;
+    var scnId = qsParam('id') || document.body.getAttribute('data-scenario-id');
+    if (!scenarioMandatedAcknowledged(scnId)) {
+      showToast('Read the highlighted phrase first, then tap Got it \u2014 back to the story.');
+      return;
+    }
+    if (btn.disabled) return;
     var st = btn.closest('.statement');
     var stmtId = st.getAttribute('data-statement-id');
     var value = btn.getAttribute('data-value');
-    var scnId = qsParam('id') || document.body.getAttribute('data-scenario-id');
 
     // Toggle aria-pressed
     st.querySelectorAll('.choice').forEach(function (c) { c.setAttribute('aria-pressed', c === btn ? 'true' : 'false'); });
@@ -892,6 +1069,8 @@
 
   function renderSummary() {
     renderSummaryBody();
+    renderResearchContribution();
+    wireResearchContribution();
 
     var toggle = document.querySelector('[data-component="axis-toggle"]');
     if (toggle) {
@@ -1097,14 +1276,6 @@
     var holder = document.querySelector('[data-summary-body]');
     if (holder) renderSummaryBody();
 
-    var resetBtn = document.querySelector('[data-action="reset"]');
-    if (resetBtn) resetBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      if (confirm('Start fresh? Your current summary will be kept on the device as a backup.')) {
-        resetState(true);
-        location.href = '01-welcome.html';
-      }
-    });
   }
 
   // -- Notes (journal) page ----------------------------------------------
@@ -1265,6 +1436,176 @@
     downloadText(JSON.stringify(state, null, 2), 'wild-session.json', 'application/json');
   }
 
+  // -- Anonymous research contribution (one-shot, statement IDs only) --------
+
+  function buildAnonymousResearchPayload() {
+    var responses = {};
+    Object.keys(state.responses).forEach(function (stmtId) {
+      responses[stmtId] = state.responses[stmtId].value;
+    });
+    return {
+      schema: 'wild_anonymous_research_v1',
+      responses: responses,
+    };
+  }
+
+  function researchResponseCount() {
+    return Object.keys(state.responses).length;
+  }
+
+  function ensureResearchConsentDialog() {
+    if (document.getElementById('research-consent-overlay')) return;
+    var overlay = document.createElement('div');
+    overlay.id = 'research-consent-overlay';
+    overlay.className = 'drawer-overlay';
+    overlay.addEventListener('click', closeResearchConsentDialog);
+    document.body.appendChild(overlay);
+
+    var dialog = document.createElement('aside');
+    dialog.id = 'research-consent-dialog';
+    dialog.className = 'consent-dialog';
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-labelledby', 'research-consent-title');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.innerHTML = ''
+      + '<header class="consent-dialog__header">'
+      +   '<div>'
+      +     '<p class="consent-dialog__eyebrow">Optional · one time only</p>'
+      +     '<h2 class="consent-dialog__title" id="research-consent-title">Send anonymous responses to research</h2>'
+      +   '</div>'
+      +   '<button type="button" class="button button--quiet consent-dialog__close" aria-label="Close">×</button>'
+      + '</header>'
+      + '<div class="consent-dialog__body" tabindex="-1">'
+      +   '<p>WILD can send a one-time, anonymous record of how you answered the statement prompts. Researchers use aggregated responses to understand patterns in how people think about living donation. You choose whether to contribute.</p>'
+      +   '<h3>What would be sent</h3>'
+      +   '<ul>'
+      +     '<li>Canonical statement IDs (for example, <code>stmt_13_1</code>)</li>'
+      +     '<li>Your Agree, Disagree, or Not sure yet answer for each</li>'
+      +   '</ul>'
+      +   '<h3>What would never be sent</h3>'
+      +   '<ul>'
+      +     '<li>Your personal notes or journal entries</li>'
+      +     '<li>The story text or your written summary</li>'
+      +     '<li>Your name, email, or any contact information</li>'
+      +     '<li>Anything that could identify you or link back to this device</li>'
+      +   '</ul>'
+      +   '<p>The server does not create an account and does not keep a profile tied to you. This submission cannot be undone, but it also cannot be traced back to you later.</p>'
+      +   '<p class="consent-dialog__prototype-note"><strong>In this prototype,</strong> the send action is simulated on your device so reviewers can see the flow. Production would post the anonymous payload to a stateless ingest endpoint used only for population-level statistics.</p>'
+      +   '<label class="consent-dialog__confirm">'
+      +     '<input type="checkbox" class="js-research-consent-check">'
+      +     '<span>I have read this and want to send my anonymous statement responses.</span>'
+      +   '</label>'
+      + '</div>'
+      + '<footer class="consent-dialog__footer">'
+      +   '<button type="button" class="button button--ghost consent-dialog__close">Cancel</button>'
+      +   '<span style="flex:1"></span>'
+      +   '<button type="button" class="button button--primary js-research-consent-submit" disabled>Send anonymous responses</button>'
+      + '</footer>';
+    document.body.appendChild(dialog);
+
+    dialog.querySelectorAll('.consent-dialog__close').forEach(function (b) {
+      b.addEventListener('click', closeResearchConsentDialog);
+    });
+    var check = dialog.querySelector('.js-research-consent-check');
+    var submit = dialog.querySelector('.js-research-consent-submit');
+    check.addEventListener('change', function () {
+      submit.disabled = !check.checked;
+    });
+    submit.addEventListener('click', submitResearchContribution);
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeResearchConsentDialog();
+    });
+  }
+
+  function openResearchConsentDialog() {
+    if (state.research_contribution) return;
+    if (researchResponseCount() === 0) {
+      showToast('Answer at least one statement before contributing.');
+      return;
+    }
+    ensureResearchConsentDialog();
+    var dialog = document.getElementById('research-consent-dialog');
+    var overlay = document.getElementById('research-consent-overlay');
+    var check = dialog.querySelector('.js-research-consent-check');
+    var submit = dialog.querySelector('.js-research-consent-submit');
+    if (check) check.checked = false;
+    if (submit) submit.disabled = true;
+    overlay.setAttribute('data-open', 'true');
+    dialog.setAttribute('data-open', 'true');
+    var body = dialog.querySelector('.consent-dialog__body');
+    setTimeout(function () { if (body) body.focus(); }, 60);
+  }
+
+  function closeResearchConsentDialog() {
+    var dialog = document.getElementById('research-consent-dialog');
+    var overlay = document.getElementById('research-consent-overlay');
+    if (dialog) dialog.setAttribute('data-open', 'false');
+    if (overlay) overlay.setAttribute('data-open', 'false');
+  }
+
+  function submitResearchContribution() {
+    var dialog = document.getElementById('research-consent-dialog');
+    var check = dialog && dialog.querySelector('.js-research-consent-check');
+    if (!check || !check.checked || state.research_contribution) return;
+    var payload = buildAnonymousResearchPayload();
+    if (!Object.keys(payload.responses).length) return;
+
+    // Prototype: simulate a one-shot POST; production uses a stateless ingest endpoint.
+    console.info('[WILD prototype] Anonymous research payload (not sent to a server):', payload);
+
+    state.research_contribution = {
+      submitted_at: new Date().toISOString(),
+      payload_version: 1,
+      response_count: Object.keys(payload.responses).length,
+    };
+    saveState();
+    closeResearchConsentDialog();
+    renderResearchContribution();
+    showToast('Anonymous responses recorded. Thank you.');
+  }
+
+  function renderResearchContribution() {
+    var section = document.querySelector('[data-research-contribution]');
+    if (!section) return;
+    var count = researchResponseCount();
+    var submitted = state.research_contribution;
+    var lede = section.querySelector('[data-research-lede]');
+    var actions = section.querySelector('.research-contribution__actions');
+    var status = section.querySelector('[data-research-status]');
+    var openBtn = section.querySelector('[data-action="research-open"]');
+
+    if (count === 0) {
+      section.hidden = true;
+      return;
+    }
+    section.hidden = false;
+
+    if (submitted) {
+      if (lede) lede.textContent = 'Thank you. Your anonymous statement responses were sent. No notes or identifying information were included.';
+      if (actions) actions.hidden = true;
+      if (status) {
+        status.hidden = false;
+        status.textContent = 'Sent on ' + formatDate(submitted.submitted_at)
+          + ' · ' + submitted.response_count + ' statement response'
+          + (submitted.response_count === 1 ? '' : 's') + '. This cannot be linked back to you.';
+      }
+    } else {
+      if (lede) lede.textContent = 'You can voluntarily send an anonymized copy of your statement responses to a secure research database. Your notes and identity are never included.';
+      if (actions) actions.hidden = false;
+      if (status) status.hidden = true;
+      if (openBtn) openBtn.disabled = false;
+    }
+  }
+
+  function wireResearchContribution() {
+    var btn = document.querySelector('[data-action="research-open"]');
+    if (!btn || btn.getAttribute('data-wired') === 'true') return;
+    btn.setAttribute('data-wired', 'true');
+    btn.addEventListener('click', function () {
+      openResearchConsentDialog();
+    });
+  }
+
   function downloadText(content, filename, mime) {
     var blob = new Blob([content], { type: mime + ';charset=utf-8' });
     var url = URL.createObjectURL(blob);
@@ -1313,12 +1654,35 @@
 
   // --------------------------------------------------------------- Boot
 
+  (function initCaptureMode() {
+    if (new URLSearchParams(window.location.search).get('capture') !== 'mobile') return;
+    document.documentElement.setAttribute('data-capture', 'mobile');
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'assets/capture.css';
+    document.head.appendChild(link);
+  })();
+
+  (function initLayoutMode() {
+    var params = new URLSearchParams(window.location.search);
+    var layoutKey = 'living-link-v4:layout';
+    try {
+      if (params.get('layout') === 'wide') sessionStorage.setItem(layoutKey, 'wide');
+      else if (params.get('layout') === 'narrow') sessionStorage.removeItem(layoutKey);
+      if (sessionStorage.getItem(layoutKey) === 'wide') {
+        document.documentElement.setAttribute('data-layout', 'wide');
+      }
+    } catch (e) { /* ignore */ }
+  })();
+
   document.addEventListener('DOMContentLoaded', function () {
     var page = document.body.getAttribute('data-page');
+    wireResetControls();
     updateTabbar();
 
     switch (page) {
       case 'welcome':   renderWelcome();   break;
+      case 'journey':   wireSingleOpenAccordions(); break;
       case 'screening': renderScreening(); break;
       case 'map':       renderMap();       break;
       case 'ecosystem': renderEcosystem(); break;

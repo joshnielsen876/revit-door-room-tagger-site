@@ -23,14 +23,56 @@
         <!-- <p class="lede">Work out what you actually think about donating a kidney.</p> -->
       </div>
 
-      <div class="welcome-body">
-        <p>This tool is called <strong>WILD</strong>, short for <em>Would I be a Living Donor?</em> It helps you build a personal donation policy: the rules you hold for yourself about what you would and would not do as a living donor. Donating a kidney is a big decision and you deserve the chance to think deeply about it. In fact, you kind of have to. As you'll see on the next page, there is a process in place to make sure that donors are well informed before they commit. </p>
+      <p class="welcome-accordion-hint">Tap a section to read it.</p>
 
-        <p>You will read short third-person stories about real situations that have come up for people considering kidney donation. After each story, a few first-person statements appear, for example <em>"I would donate to a stranger only if I could be compensated for travel costs"</em> or <em>"I would not commit to donation without being well educated on what it involves."</em> You mark each one Agree, Disagree, or Not sure yet.</p>
+      <div class="welcome-accordion" data-single-accordion>
+        <section class="welcome-panel" data-accordion-panel data-open="true">
+          <h2 class="welcome-panel__heading">
+            <button class="welcome-panel__trigger" type="button" aria-expanded="true" aria-controls="welcome-panel-what" id="welcome-trigger-what">
+              <span class="welcome-panel__title">What is WILD?</span>
+              <span class="welcome-panel__chevron" aria-hidden="true"></span>
+            </button>
+          </h2>
+          <div class="welcome-panel__content" id="welcome-panel-what" role="region" aria-labelledby="welcome-trigger-what">
+            <p>This tool is called <strong>WILD</strong>, short for <em>Would I be a Living Donor?</em> It helps you build a personal donation policy: the rules you hold for yourself about what you would and would not do as a living donor. Donating a kidney is a big decision and you deserve the chance to think deeply about it. In fact, you kind of have to. As you'll see on the next page, there is a process in place to make sure that donors are well informed before they commit.</p>
+          </div>
+        </section>
 
-        <p>The stories are fictional, but based on things people actually said in public, like in forum threads, social media posts, and comment sections. That is where the name comes from: the real situations people face 'in the wild.'</p>
+        <section class="welcome-panel" data-accordion-panel>
+          <h2 class="welcome-panel__heading">
+            <button class="welcome-panel__trigger" type="button" aria-expanded="false" aria-controls="welcome-panel-how" id="welcome-trigger-how">
+              <span class="welcome-panel__title">How it works</span>
+              <span class="welcome-panel__chevron" aria-hidden="true"></span>
+            </button>
+          </h2>
+          <div class="welcome-panel__content" id="welcome-panel-how" role="region" aria-labelledby="welcome-trigger-how" hidden>
+            <p>You will read short third-person stories about real situations that have come up for people considering kidney donation. After each story, a few first-person statements appear, for example <em>"I would donate to a stranger only if I could be compensated for travel costs"</em> or <em>"I would not commit to donation without being well educated on what it involves."</em> You mark each one Agree, Disagree, or Not sure yet.</p>
+          </div>
+        </section>
 
-        <p>At the end you get a short summary of every statement you agreed with, disagreed with, and were unsure about. You can check the summary at any time from inside the tool and you can stop and come back. The finished summary is yours to keep, edit, print, or bring to a conversation with a transplant program or others you trust. Most people spend ten to twenty minutes the first time. Nothing you write leaves your device unless you send it somewhere yourself.</p>
+        <section class="welcome-panel" data-accordion-panel>
+          <h2 class="welcome-panel__heading">
+            <button class="welcome-panel__trigger" type="button" aria-expanded="false" aria-controls="welcome-panel-stories" id="welcome-trigger-stories">
+              <span class="welcome-panel__title">Where the stories come from</span>
+              <span class="welcome-panel__chevron" aria-hidden="true"></span>
+            </button>
+          </h2>
+          <div class="welcome-panel__content" id="welcome-panel-stories" role="region" aria-labelledby="welcome-trigger-stories" hidden>
+            <p>The stories are fictional, but based on things people actually said in public, like in forum threads, social media posts, and comment sections. That is where the name comes from: the real situations people face 'in the wild.'</p>
+          </div>
+        </section>
+
+        <section class="welcome-panel" data-accordion-panel>
+          <h2 class="welcome-panel__heading">
+            <button class="welcome-panel__trigger" type="button" aria-expanded="false" aria-controls="welcome-panel-summary" id="welcome-trigger-summary">
+              <span class="welcome-panel__title">Your summary and privacy</span>
+              <span class="welcome-panel__chevron" aria-hidden="true"></span>
+            </button>
+          </h2>
+          <div class="welcome-panel__content" id="welcome-panel-summary" role="region" aria-labelledby="welcome-trigger-summary" hidden>
+            <p>At the end you get a short summary of every statement you agreed with, disagreed with, and were unsure about. You can check the summary at any time from inside the tool and you can stop and come back. The finished summary is yours to keep, edit, print, or bring to a conversation with a transplant program or others you trust. Most people spend ten to twenty minutes the first time. Nothing you write leaves your device unless you send it somewhere yourself.</p>
+          </div>
+        </section>
       </div>
 
       <div class="welcome-intent" data-screening-q="intent" aria-label="One quick question before you start">

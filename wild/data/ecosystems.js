@@ -7,7 +7,7 @@ window.LL_ECOSYSTEMS = [
   {
     id: 'recipient_relationship',
     title: 'Recipient relationship',
-    what: 'Who the recipient is, the relationship itself, what they’ve said to you about the situation. The largest single driver of how donors decide.',
+    what: 'These scenarios explore who the recipient is, the relationship between donor and recipient, and what each has said to the other about the situation.',
     sub_areas: [
       { id: 'spouse_partner', label: 'Spouse or partner' },
       { id: 'parent_child',   label: 'Parent or child' },
@@ -19,8 +19,8 @@ window.LL_ECOSYSTEMS = [
   },
   {
     id: 'conversation',
-    title: 'The conversation around you',
-    what: 'Family expectations, suspected coercion, social-media noise, the voices in the room when the topic comes up.',
+    title: 'Social context',
+    what: 'These scenarios explore the people and voices around you when donation is on the table, including family expectations, possible coercion, and social media.',
     sub_areas: [
       { id: 'family_pressure',  label: 'Family pressure' },
       { id: 'coercion',         label: 'Suspected coercion' },
@@ -31,7 +31,7 @@ window.LL_ECOSYSTEMS = [
   {
     id: 'eligibility',
     title: 'Medical eligibility',
-    what: 'BMI and blood-pressure cutoffs, lifestyle changes to qualify, activities that may have to change, what the workup catches.',
+    what: 'These scenarios explore who can donate, what medical and lifestyle requirements have to be met, and what activities may have to change after donation.',
     sub_areas: [
       { id: 'cutoffs',     label: 'BMI / BP / cutoffs' },
       { id: 'lifestyle',   label: 'Lifestyle changes' },
@@ -41,7 +41,7 @@ window.LL_ECOSYSTEMS = [
   {
     id: 'logistics',
     title: 'Logistical problems',
-    what: 'Lost wages, gig work with no PTO, travel and lodging, recovery timelines, pace of evaluation. The practical questions that decide whether a willing donor can proceed.',
+    what: 'These scenarios explore the practical questions a willing donor faces, including lost wages, travel, caregiving, and the pace of evaluation.',
     sub_areas: [
       { id: 'money',       label: 'Money / lost wages' },
       { id: 'caregiving',  label: 'Caregiving load' },
@@ -51,7 +51,7 @@ window.LL_ECOSYSTEMS = [
   {
     id: 'long_term',
     title: 'Life on one kidney',
-    what: 'Long-term health effects, graft failure and donor grief, meeting the recipient years later, the limits of clinical follow-up.',
+    what: 'These scenarios explore what life looks like after donation, including long-term health, meeting the recipient years later, and what happens when a transplant fails or follow-up ends.',
     sub_areas: [
       { id: 'health',      label: 'Long-term health' },
       { id: 'grief',       label: 'Donor grief / graft failure' },
