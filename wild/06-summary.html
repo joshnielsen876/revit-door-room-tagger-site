@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WILD — a story</title>
+  <title>WILD — your summary</title>
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
-<body data-page="scenario" data-has-tab-bar="true">
+<body data-page="summary" data-has-tab-bar="true">
   <div class="app-shell">
     <header class="app-header">
       <a class="brand" href="index.html">
         <span class="brand__mark">WILD</span>
-        <span class="brand__sub">A story</span>
+        <span class="brand__sub">Your summary</span>
       </a>
       <div class="app-header__right">
         <a class="leave-link" href="index.html">Leave for now</a>
@@ -19,36 +19,38 @@
     </header>
 
     <main class="app-main">
-      <nav class="crumbs" aria-label="Breadcrumb" data-crumbs></nav>
+      <div class="summary-head">
+        <h1>This summary is the donation policy you created.</h1>
+        <p class="lede">Below are the statements you agreed with, the ones you disagreed with, and the ones you are still working out. It is yours to keep, edit, print, or bring to a conversation with a transplant program or others you trust. You can come back and add to it any time.</p>
+      </div>
 
-      <article class="scenario" data-component="scenario"></article>
+      <div data-summary-body></div>
 
-      <p class="disclaimer">Fictional composite. Stems and statements drawn from common patterns in donor narratives. No real person is depicted.</p>
+      <section class="research-contribution" data-research-contribution aria-labelledby="research-contribution-title" hidden>
+        <h2 class="research-contribution__title" id="research-contribution-title">Help research (optional)</h2>
+        <p class="research-contribution__lede" data-research-lede>You can voluntarily send an anonymized copy of your statement responses to a secure research database. Your notes and identity are never included.</p>
+        <div class="research-contribution__actions">
+          <button class="button button--ghost" type="button" data-action="research-open">Learn more and contribute</button>
+        </div>
+        <p class="research-contribution__status" data-research-status hidden></p>
+      </section>
+
+      <div class="summary-export">
+        <a class="button button--ghost" href="#" data-export="pdf">Download as PDF</a>
+        <a class="button button--ghost" href="#" data-export="text">Copy as plain text</a>
+        <span class="spacer"></span>
+        <a class="button button--quiet" href="#" data-export="json">Save session</a>
+        <a class="button button--quiet" href="#" data-export="import">Load session</a>
+        <a class="button button--quiet" href="#" data-action="reset">Start fresh</a>
+      </div>
     </main>
-
-    <div class="toast" id="toast" role="status" aria-live="polite">
-      <span class="toast__text">Added to your summary</span>
-      <a class="toast__link" href="06-summary.html">See it</a>
-    </div>
 
     <nav class="tab-bar" aria-label="Main">
       <div class="tab-bar__inner">
-        <a href="03-map.html" data-tab="map">
-          <span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>
-          Map
-        </a>
-        <a href="08-library.html" data-tab="library">
-          <span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v16H4z"/><path d="M14 4h6v16h-6z"/></svg></span>
-          Library
-        </a>
-        <a href="10-notes.html" data-tab="notes">
-          <span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5"/></svg></span>
-          Notes
-        </a>
-        <a href="06-summary.html" data-tab="summary">
-          <span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></span>
-          Summary
-        </a>
+        <a href="03-map.html" data-tab="map"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Map</a>
+        <a href="08-library.html" data-tab="library"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v16H4z"/><path d="M14 4h6v16h-6z"/></svg></span>Library</a>
+        <a href="10-notes.html" data-tab="notes"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5"/></svg></span>Notes</a>
+        <a href="06-summary.html" data-tab="summary" aria-current="page"><span class="tab-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></span>Summary</a>
       </div>
     </nav>
   </div>
